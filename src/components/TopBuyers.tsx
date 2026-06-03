@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface Buyer {
   rank: number;
@@ -22,7 +23,7 @@ const TopBuyers: React.FC = () => {
     <div className="bg-white rounded-lg border border-gray-200 p-0">
       <div className="flex items-center justify-between px-4 py-3.5 pb-2.5">
         <div className="text-sm font-semibold text-gray-900">Top Buyers (This Week)</div>
-        <a className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View full report</a>
+        <Link to="/reports" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View full report</Link>
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       <div className="py-2">

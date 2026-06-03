@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -105,7 +106,7 @@ const PipelineOverview: React.FC = () => {
     <div className="bg-white rounded-lg border border-gray-200 p-0">
       <div className="flex items-center justify-between px-4 py-3.5 pb-2.5">
         <div className="text-sm font-semibold text-gray-900">Pipeline Overview</div>
-        <a className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View full pipeline</a>
+        <Link to="/pipeline" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View full pipeline</Link>
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       {/* Stage Headers */}

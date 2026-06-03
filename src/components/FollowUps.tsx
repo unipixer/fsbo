@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Phone, MessageSquare, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -33,7 +34,7 @@ const FollowUps: React.FC = () => {
     <div className="bg-white rounded-lg border border-gray-200 p-0">
       <div className="flex items-center justify-between px-4 py-3.5 pb-2.5">
         <div className="text-sm font-semibold text-gray-900">Follow Ups Due Today</div>
-        <a className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View all</a>
+        <Link to="/tasks" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View all</Link>
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       <div className="py-1.5">
@@ -69,9 +70,9 @@ const FollowUps: React.FC = () => {
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       <div className="px-4 py-2.5">
-        <a className="text-blue-600 text-xs font-medium cursor-pointer hover:underline flex items-center gap-1">
+        <Link to="/tasks" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline flex items-center gap-1">
           View all follow ups <ArrowRight size={13} color="#2563eb" strokeWidth={2.5} />
-        </a>
+        </Link>
       </div>
     </div>
   );

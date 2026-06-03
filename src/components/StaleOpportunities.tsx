@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -43,9 +44,9 @@ const StaleOpportunities: React.FC = () => {
             </div>
           ))}
         </div>
-        <a className="text-blue-600 text-xs font-medium cursor-pointer hover:underline flex-shrink-0 whitespace-nowrap flex items-center gap-0.75">
+        <Link to="/opportunities" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline flex-shrink-0 whitespace-nowrap flex items-center gap-0.75">
           View all stale <ArrowRight size={12} color="#2563eb" strokeWidth={2.5} />
-        </a>
+        </Link>
       </div>
     </div>
   );

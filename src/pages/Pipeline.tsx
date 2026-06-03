@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Filter, Search, Plus, MoreVertical, User, Calendar, 
   MessageSquare, Phone, Clock, AlertCircle, XCircle
@@ -244,10 +245,10 @@ const Pipeline: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-2.5">
-            <button className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50">
+            <Link to="/opportunities" className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50">
               <Plus size={14} color="#6b7280" />
               <span className="text-xs text-gray-700 font-medium">Add Opportunity</span>
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -487,10 +488,10 @@ const Pipeline: React.FC = () => {
                 <Phone size={14} />
                 Call Seller
               </button>
-              <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
+              <Link to="/appointments" className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
                 <Calendar size={14} />
                 Schedule Appointment
-              </button>
+              </Link>
               <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
                 <MoreVertical size={14} />
                 More Options

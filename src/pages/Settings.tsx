@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   User, Bell, Shield, Database, Globe, Moon, Sun, ChevronRight,
-  Save, Mail, Phone, MapPin, Building2
+  Save, Building2
 } from 'lucide-react';
 
 const Settings: React.FC = () => {
@@ -193,9 +194,9 @@ const Settings: React.FC = () => {
             <h2 className="text-xl font-bold text-gray-900 mb-4">Integration Settings</h2>
             <div className="bg-white rounded-lg border border-gray-200 p-4">
               <p className="text-sm text-gray-600">Integration settings are managed in the Integrations page.</p>
-              <button className="mt-3 bg-blue-600 text-white text-xs font-medium px-4 py-2 rounded-lg hover:bg-blue-700">
+              <Link to="/integrations" className="mt-3 bg-blue-600 text-white text-xs font-medium px-4 py-2 rounded-lg hover:bg-blue-700 inline-block">
                 Go to Integrations
-              </button>
+              </Link>
             </div>
           </div>
         )}

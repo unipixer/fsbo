@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Filter, Search, Plus, MoreVertical, User, 
   MessageSquare, Phone, CheckCircle, XCircle, Clock, AlertCircle,
@@ -547,10 +548,10 @@ const Tasks: React.FC = () => {
                 </button>
               )}
               {selectedTask.type === 'appointment' && (
-                <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
+                <Link to="/appointments" className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
                   <CalendarIcon size={14} />
                   View Appointment
-                </button>
+                </Link>
               )}
               <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
                 <MoreVertical size={14} />
