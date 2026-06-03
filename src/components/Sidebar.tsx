@@ -60,10 +60,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
           <List size={16} className="w-4 h-4 flex-shrink-0" />
           Opportunities
         </Link>
-        <Link to="/conversations" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/conversations') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+        {/* <Link to="/conversations" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/conversations') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <Search size={16} className="w-4 h-4 flex-shrink-0" />
           Conversations
-        </Link>
+        </Link> */}
         <Link to="/tasks" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/tasks') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <MessageSquare size={16} className="w-4 h-4 flex-shrink-0" />
           Tasks & Follow Ups

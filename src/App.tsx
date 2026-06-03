@@ -24,7 +24,7 @@ function App() {
           <Route index element={<Dashboard />} />
           <Route path="pipeline" element={<Pipeline />} />
           <Route path="opportunities" element={<Opportunities />} />
-          <Route path="conversations" element={<Conversations />} />
+          {/* <Route path="conversations" element={<Conversations />} /> */}
           <Route path="tasks" element={<Tasks />} />
           <Route path="appointments" element={<Appointments />} />
           <Route path="appraisals" element={<Appraisals />} />
