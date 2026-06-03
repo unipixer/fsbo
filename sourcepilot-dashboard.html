@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SourcePilot – Vehicle Sourcing Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.363.0/lucide.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:#f3f4f6;color:#111827;font-size:13px}
+  ::-webkit-scrollbar{width:5px;height:5px}
+  ::-webkit-scrollbar-track{background:#f1f1f1}
+  ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:3px}
+  .sidebar{width:210px;min-width:210px;background:#1a2332;height:100vh;overflow-y:auto;flex-shrink:0;display:flex;flex-direction:column}
+  .main-content{flex:1;overflow-y:auto;height:100vh}
+  .topbar{background:#fff;border-bottom:1px solid #e5e7eb;height:56px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:10}
+  .stat-card{background:#fff;border-radius:8px;border:1px solid #e5e7eb;padding:16px 18px}
+  .badge-high{background:#fee2e2;color:#dc2626;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:500}
+  .badge-med{background:#fef3c7;color:#d97706;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:500}
+  .badge-low{background:#f3f4f6;color:#6b7280;font-size:11px;padding:2px 8px;border-radius:12px;font-weight:500}
+  .badge-active{background:#d1fae5;color:#059669;font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+  .badge-soon{background:#f3f4f6;color:#9ca3af;font-size:11px;padding:3px 10px;border-radius:12px;font-weight:500}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;color:#9ca3af;cursor:pointer;transition:all .15s;font-size:13px;font-weight:400;border-radius:6px;margin:1px 8px}
+  .nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+  .nav-item.active{background:#2563eb;color:#fff}
+  .nav-item svg{width:16px;height:16px;flex-shrink:0}
+  .section-label{color:#6b7280;font-size:10px;font-weight:600;letter-spacing:.08em;padding:16px 16px 4px;text-transform:uppercase}
+  .pipeline-stage{text-align:center;flex:1}
+  .pipeline-bar{height:3px;border-radius:2px;margin-top:4px}
+  .car-thumb{width:56px;height:38px;border-radius:4px;object-fit:cover;background:#e5e7eb;flex-shrink:0}
+  .car-placeholder{width:56px;height:38px;border-radius:4px;background:linear-gradient(135deg,#e5e7eb 0%,#d1d5db 100%);flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .progress-bar{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:3px}
+  .checkbox-custom{width:15px;height:15px;border:1.5px solid #d1d5db;border-radius:3px;flex-shrink:0}
+  .view-link{color:#2563eb;font-size:12px;font-weight:500;cursor:pointer;text-decoration:none}
+  .view-link:hover{text-decoration:underline}
+  .icon-btn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+  .right-panel{width:280px;min-width:280px;background:#fff;border-left:1px solid #e5e7eb;height:100vh;overflow-y:auto;flex-shrink:0}
+  .divider{border:none;border-top:1px solid #f3f4f6;margin:0}
+  .action-icon{width:26px;height:26px;border-radius:50%;background:#f3f4f6;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+</style>
+</head>
+<body>
+<div style="display:flex;height:100vh;overflow:hidden">
+
+<!-- ===== SIDEBAR ===== -->
+<div class="sidebar">
+  <!-- Logo -->
+  <div style="padding:16px;border-bottom:1px solid rgba(255,255,255,.1)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:34px;height:34px;background:#2563eb;border-radius:8px;display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div>
+        <div style="color:#fff;font-weight:700;font-size:14px;line-height:1.2">SourcePilot</div>
+        <div style="color:#9ca3af;font-size:10.5px">Vehicle Sourcing Dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Selector -->
+  <div style="margin:12px 10px 4px;background:rgba(255,255,255,.07);border-radius:8px;padding:10px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="color:#fff;font-weight:600;font-size:13px">Turner Motors</div>
+      <div style="color:#9ca3af;font-size:11px">Dallas, TX</div>
+    </div>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+
+  <!-- Nav -->
+  <nav style="flex:1;padding-top:8px">
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Pipeline
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Opportunities
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Conversations
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Tasks &amp; Follow Ups
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Appointments
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Appraisals
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Vehicles
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Sellers
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Reports
+    </div>
+
+    <div class="section-label">Management</div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Team
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Templates
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Settings
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      Integrations
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Billing
+    </div>
+
+    <div class="section-label">Sources</div>
+    <div class="nav-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:20px;height:20px;background:#1877f2;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </div>
+        <span style="color:#d1d5db;font-size:12.5px">Facebook Marketplace</span>
+      </div>
+      <span class="badge-active" style="font-size:10px;padding:2px 7px">Active</span>
+    </div>
+    <div class="nav-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:20px;height:20px;background:#6b7280;border-radius:50%;flex-shrink:0"></div>
+        <span style="color:#6b7280;font-size:12.5px">OfferUp</span>
+      </div>
+      <span class="badge-soon" style="font-size:10px;padding:2px 7px">Coming soon</span>
+    </div>
+    <div class="nav-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:20px;height:20px;background:#6b7280;border-radius:50%;flex-shrink:0"></div>
+        <span style="color:#6b7280;font-size:12.5px">Craigslist</span>
+      </div>
+      <span class="badge-soon" style="font-size:10px;padding:2px 7px">Coming soon</span>
+    </div>
+    <div class="nav-item" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:20px;height:20px;background:#6b7280;border-radius:50%;flex-shrink:0"></div>
+        <span style="color:#6b7280;font-size:12.5px">Inbound Forms</span>
+      </div>
+      <span class="badge-soon" style="font-size:10px;padding:2px 7px">Coming soon</span>
+    </div>
+  </nav>
+
+  <!-- Collapse -->
+  <div style="border-top:1px solid rgba(255,255,255,.08);padding:12px 16px">
+    <div class="nav-item" style="margin:0">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span style="font-size:13px">Collapse</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN AREA ===== -->
+<div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <button style="background:none;border:none;cursor:pointer;color:#6b7280;padding:4px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div style="flex:1;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;display:flex;align-items:center;gap:8px;padding:0 12px;height:34px;max-width:360px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span style="color:#9ca3af;font-size:13px;flex:1">Search opportunities, vehicles, sellers...</span>
+      <span style="color:#9ca3af;font-size:11px;background:#e5e7eb;padding:1px 6px;border-radius:4px">⌘ K</span>
+    </div>
+    <div style="flex:1"></div>
+    <div style="width:30px;height:30px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <div class="icon-btn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    </div>
+    <div style="position:relative" class="icon-btn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span style="position:absolute;top:-1px;right:-1px;width:14px;height:14px;background:#ef4444;border-radius:50%;font-size:8.5px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600">8</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;cursor:pointer">
+      <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600">JD</div>
+      <div>
+        <div style="font-size:12.5px;font-weight:600;color:#111827;line-height:1.2">James Dalton</div>
+        <div style="font-size:11px;color:#6b7280">Buyer</div>
+      </div>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </div>
+
+  <!-- Content + Right Panel -->
+  <div style="flex:1;display:flex;overflow:hidden">
+
+    <!-- Scrollable Center -->
+    <div class="main-content" style="flex:1;padding:20px 22px;background:#f3f4f6">
+
+      <!-- Page Header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <h1 style="font-size:22px;font-weight:700;color:#111827;line-height:1.2">Dashboard</h1>
+          <p style="color:#6b7280;font-size:13px;margin-top:2px">Welcome back, James. Here's what's happening with your pipeline today.</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:6px;cursor:pointer">
+            <span style="font-size:13px;color:#374151;font-weight:500">May 12, 2025</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:6px;cursor:pointer">
+            <span style="font-size:13px;color:#374151;font-weight:500">All sources</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Cards Row -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px">
+        <!-- Total Opportunities -->
+        <div class="stat-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:6px">Total Opportunities</div>
+              <div style="font-size:26px;font-weight:700;color:#111827;line-height:1">234</div>
+              <div style="display:flex;align-items:center;gap:4px;margin-top:5px">
+                <span style="color:#10b981;font-size:12px;font-weight:500">↑ 18%</span>
+              </div>
+              <div style="color:#9ca3af;font-size:10.5px;margin-top:2px">vs last 7 days</div>
+            </div>
+            <div style="width:34px;height:34px;background:#eff6ff;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </div>
+          </div>
+        </div>
+        <!-- New This Week -->
+        <div class="stat-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:6px">New This Week</div>
+              <div style="font-size:26px;font-weight:700;color:#111827;line-height:1">42</div>
+              <div style="display:flex;align-items:center;gap:4px;margin-top:5px">
+                <span style="color:#10b981;font-size:12px;font-weight:500">↑ 12%</span>
+              </div>
+              <div style="color:#9ca3af;font-size:10.5px;margin-top:2px">vs last 7 days</div>
+            </div>
+            <div style="width:34px;height:34px;background:#f0fdf4;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            </div>
+          </div>
+        </div>
+        <!-- Follow Ups Due Today -->
+        <div class="stat-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:6px">Follow Ups Due Today</div>
+              <div style="font-size:26px;font-weight:700;color:#111827;line-height:1">18</div>
+              <div style="display:flex;align-items:center;gap:4px;margin-top:5px">
+                <span style="color:#ef4444;font-size:12px;font-weight:500">↑ 5</span>
+              </div>
+              <div style="color:#9ca3af;font-size:10.5px;margin-top:2px">Requires your attention</div>
+            </div>
+            <div style="width:34px;height:34px;background:#fff7ed;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+          </div>
+        </div>
+        <!-- Appointments This Week -->
+        <div class="stat-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:6px">Appointments This Week</div>
+              <div style="font-size:26px;font-weight:700;color:#111827;line-height:1">7</div>
+              <div style="display:flex;align-items:center;gap:4px;margin-top:5px">
+                <span style="color:#10b981;font-size:12px;font-weight:500">↑ 2</span>
+              </div>
+              <div style="color:#9ca3af;font-size:10.5px;margin-top:2px">Scheduled</div>
+            </div>
+            <div style="width:34px;height:34px;background:#f5f3ff;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+          </div>
+        </div>
+        <!-- Vehicles Appraised -->
+        <div class="stat-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:6px">Vehicles Appraised</div>
+              <div style="font-size:26px;font-weight:700;color:#111827;line-height:1">11</div>
+              <div style="display:flex;align-items:center;gap:4px;margin-top:5px">
+                <span style="color:#10b981;font-size:12px;font-weight:500">↑ 7%</span>
+              </div>
+              <div style="color:#9ca3af;font-size:10.5px;margin-top:2px">vs last 7 days</div>
+            </div>
+            <div style="width:34px;height:34px;background:#fef2f2;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2: Follow Ups + Pipeline Overview -->
+      <div style="display:grid;grid-template-columns:1fr 1.35fr;gap:14px;margin-bottom:14px">
+        <!-- Follow Ups Due Today -->
+        <div class="stat-card" style="padding:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px">
+            <div style="font-size:14px;font-weight:600;color:#111827">Follow Ups Due Today</div>
+            <a class="view-link">View all</a>
+          </div>
+          <hr class="divider"/>
+          <!-- Items -->
+          <div style="padding:6px 0">
+            <!-- Item 1 -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <div class="car-placeholder"><svg width="22" height="16" viewBox="0 0 24 16" fill="none"><rect x="1" y="4" width="16" height="10" rx="2" fill="#d1d5db"/><path d="M17 8h4l2 4v2h-6V8z" fill="#d1d5db"/><circle cx="5" cy="14" r="2" fill="#9ca3af"/><circle cx="19" cy="14" r="2" fill="#9ca3af"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;font-weight:600;color:#111827;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">2018 Honda Accord EX</div>
+                <div style="font-size:11.5px;color:#6b7280">Mike Johnson</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="color:#ef4444;font-size:12px;font-weight:500;margin-bottom:3px">10:30 AM</div>
+                <span class="badge-high">High</span>
+              </div>
+              <div class="action-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12 19.79 19.79 0 0 1 1.99 3.4 2 2 0 0 1 3.96 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            </div>
+            <hr class="divider"/>
+            <!-- Item 2 -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <div class="car-placeholder"><svg width="22" height="16" viewBox="0 0 24 16" fill="none"><rect x="1" y="3" width="17" height="11" rx="2" fill="#d1d5db"/><path d="M18 7h4l2 5v2h-6V7z" fill="#d1d5db"/><circle cx="5" cy="14" r="2" fill="#9ca3af"/><circle cx="19" cy="14" r="2" fill="#9ca3af"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2017 Ford F-150 XLT</div>
+                <div style="font-size:11.5px;color:#6b7280">Sarah Williams</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="color:#f97316;font-size:12px;font-weight:500;margin-bottom:3px">11:00 AM</div>
+                <span class="badge-med">Medium</span>
+              </div>
+              <div class="action-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            </div>
+            <hr class="divider"/>
+            <!-- Item 3 -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <div class="car-placeholder"><svg width="22" height="16" viewBox="0 0 24 16" fill="none"><rect x="2" y="5" width="16" height="9" rx="2" fill="#d1d5db"/><path d="M18 8h4l2 4v2h-6V8z" fill="#d1d5db"/><circle cx="6" cy="14" r="2" fill="#9ca3af"/><circle cx="19" cy="14" r="2" fill="#9ca3af"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2020 Toyota Camry LE</div>
+                <div style="font-size:11.5px;color:#6b7280">David Chen</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="color:#f97316;font-size:12px;font-weight:500;margin-bottom:3px">12:30 PM</div>
+                <span class="badge-med">Medium</span>
+              </div>
+              <div class="action-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            </div>
+            <hr class="divider"/>
+            <!-- Item 4 -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <div class="car-placeholder"><svg width="22" height="16" viewBox="0 0 24 16" fill="none"><rect x="1" y="4" width="16" height="10" rx="2" fill="#d1d5db"/><path d="M17 8h4l2 4v2h-6V8z" fill="#d1d5db"/><circle cx="5" cy="14" r="2" fill="#9ca3af"/><circle cx="19" cy="14" r="2" fill="#9ca3af"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2019 Nissan Altima SR</div>
+                <div style="font-size:11.5px;color:#6b7280">Luis Martinez</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="color:#6b7280;font-size:12px;font-weight:500;margin-bottom:3px">2:00 PM</div>
+                <span class="badge-low">Low</span>
+              </div>
+              <div class="action-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12 19.79 19.79 0 0 1 1.99 3.4 2 2 0 0 1 3.96 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+            </div>
+            <hr class="divider"/>
+            <!-- Item 5 -->
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <div class="car-placeholder"><svg width="22" height="16" viewBox="0 0 24 16" fill="none"><rect x="1" y="4" width="16" height="10" rx="2" fill="#d1d5db"/><path d="M17 8h4l2 4v2h-6V8z" fill="#d1d5db"/><circle cx="5" cy="14" r="2" fill="#9ca3af"/><circle cx="19" cy="14" r="2" fill="#9ca3af"/></svg></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2016 BMW 328i</div>
+                <div style="font-size:11.5px;color:#6b7280">Jason Brown</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="color:#6b7280;font-size:12px;font-weight:500;margin-bottom:3px">3:30 PM</div>
+                <span class="badge-low">Low</span>
+              </div>
+              <div class="action-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            </div>
+          </div>
+          <hr class="divider"/>
+          <div style="padding:10px 16px">
+            <a class="view-link" style="display:flex;align-items:center;gap:4px">View all follow ups <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
+        </div>
+
+        <!-- Pipeline Overview -->
+        <div class="stat-card" style="padding:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px">
+            <div style="font-size:14px;font-weight:600;color:#111827">Pipeline Overview</div>
+            <a class="view-link">View full pipeline</a>
+          </div>
+          <hr class="divider"/>
+          <!-- Stage Headers -->
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);padding:12px 14px 0;gap:2px">
+            <div class="pipeline-stage">
+              <div style="font-size:11.5px;color:#6b7280;font-weight:500">New</div>
+              <div style="font-size:20px;font-weight:700;color:#111827;margin:2px 0">24</div>
+              <div class="pipeline-bar" style="background:#3b82f6"></div>
+            </div>
+            <div class="pipeline-stage">
+              <div style="font-size:11.5px;color:#6b7280;font-weight:500">Contacted</div>
+              <div style="font-size:20px;font-weight:700;color:#111827;margin:2px 0">37</div>
+              <div class="pipeline-bar" style="background:#8b5cf6"></div>
+            </div>
+            <div class="pipeline-stage">
+              <div style="font-size:11.5px;color:#6b7280;font-weight:500">Negotiating</div>
+              <div style="font-size:20px;font-weight:700;color:#111827;margin:2px 0">28</div>
+              <div class="pipeline-bar" style="background:#f59e0b"></div>
+            </div>
+            <div class="pipeline-stage">
+              <div style="font-size:11.5px;color:#6b7280;font-weight:500">Appraisal</div>
+              <div style="font-size:20px;font-weight:700;color:#111827;margin:2px 0">15</div>
+              <div class="pipeline-bar" style="background:#f97316"></div>
+            </div>
+            <div class="pipeline-stage">
+              <div style="font-size:11.5px;color:#6b7280;font-weight:500">Offer Made</div>
+              <div style="font-size:20px;font-weight:700;color:#111827;margin:2px 0">22</div>
+              <div class="pipeline-bar" style="background:#06b6d4"></div>
+            </div>
+            <div class="pipeline-stage">
+              <div style="font-size:11.5px;color:#6b7280;font-weight:500">Closed</div>
+              <div style="font-size:20px;font-weight:700;color:#111827;margin:2px 0">18</div>
+              <div class="pipeline-bar" style="background:#10b981"></div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);padding:4px 14px 8px;gap:2px">
+            <div style="text-align:center;font-size:10.5px;color:#9ca3af">$283,400</div>
+            <div style="text-align:center;font-size:10.5px;color:#9ca3af">$412,650</div>
+            <div style="text-align:center;font-size:10.5px;color:#9ca3af">$517,300</div>
+            <div style="text-align:center;font-size:10.5px;color:#9ca3af">$275,000</div>
+            <div style="text-align:center;font-size:10.5px;color:#9ca3af">$380,900</div>
+            <div style="text-align:center;font-size:10.5px;color:#9ca3af">$610,200</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);padding:0 14px 10px;gap:2px">
+            <div style="text-align:center;font-size:10px;color:#b0b7c3">24 vehicles</div>
+            <div style="text-align:center;font-size:10px;color:#b0b7c3">37 vehicles</div>
+            <div style="text-align:center;font-size:10px;color:#b0b7c3">28 vehicles</div>
+            <div style="text-align:center;font-size:10px;color:#b0b7c3">15 vehicles</div>
+            <div style="text-align:center;font-size:10px;color:#b0b7c3">22 vehicles</div>
+            <div style="text-align:center;font-size:10px;color:#b0b7c3">18 vehicles</div>
+          </div>
+          <hr class="divider"/>
+          <!-- Pipeline Value Chart -->
+          <div style="padding:12px 16px 10px">
+            <div style="font-size:12.5px;font-weight:600;color:#374151;margin-bottom:8px">Pipeline Value</div>
+            <div style="display:flex;align-items:flex-end;gap:14px">
+              <div style="flex:1;height:100px;position:relative">
+                <canvas id="pipelineChart" style="width:100%;height:100px"></canvas>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:11px;color:#6b7280;margin-bottom:2px">Total Pipeline Value</div>
+                <div style="font-size:20px;font-weight:700;color:#111827">$2,479,450</div>
+                <div style="color:#10b981;font-size:12px;font-weight:600;margin-top:2px">↑ 14%</div>
+                <div style="color:#9ca3af;font-size:10.5px">vs last 7 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: Opp by Source + Top Buyers + Opp by Stage -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px">
+        <!-- Opportunities by Source -->
+        <div class="stat-card" style="padding:0">
+          <div style="padding:14px 16px 10px;font-size:14px;font-weight:600;color:#111827">Opportunities by Source</div>
+          <hr class="divider"/>
+          <div style="padding:14px 16px;display:flex;align-items:center;gap:14px">
+            <div style="position:relative;width:110px;height:110px;flex-shrink:0">
+              <canvas id="sourceChart"></canvas>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <div style="font-size:20px;font-weight:700;color:#111827">234</div>
+                <div style="font-size:10px;color:#6b7280">Total</div>
+              </div>
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                <div style="width:8px;height:8px;background:#2563eb;border-radius:50%;flex-shrink:0"></div>
+                <span style="font-size:12px;color:#374151;flex:1">Facebook Marketplace</span>
+                <span style="font-size:12px;font-weight:500;color:#111827">234 (100%)</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                <div style="width:8px;height:8px;background:#93c5fd;border-radius:50%;flex-shrink:0"></div>
+                <span style="font-size:12px;color:#374151;flex:1">OfferUp</span>
+                <span style="font-size:12px;font-weight:500;color:#111827">0 (0%)</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+                <div style="width:8px;height:8px;background:#bfdbfe;border-radius:50%;flex-shrink:0"></div>
+                <span style="font-size:12px;color:#374151;flex:1">Craigslist</span>
+                <span style="font-size:12px;font-weight:500;color:#111827">0 (0%)</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="width:8px;height:8px;background:#e0e7ff;border-radius:50%;flex-shrink:0"></div>
+                <span style="font-size:12px;color:#374151;flex:1">Inbound Forms</span>
+                <span style="font-size:12px;font-weight:500;color:#111827">0 (0%)</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:0 16px 12px;color:#9ca3af;font-size:11.5px">More sources coming soon</div>
+        </div>
+
+        <!-- Top Buyers -->
+        <div class="stat-card" style="padding:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px">
+            <div style="font-size:14px;font-weight:600;color:#111827">Top Buyers (This Week)</div>
+            <a class="view-link" style="font-size:11.5px">View full report</a>
+          </div>
+          <hr class="divider"/>
+          <div style="padding:8px 0">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <span style="color:#9ca3af;font-size:12px;width:10px;text-align:center;flex-shrink:0">1</span>
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0">JD</div>
+              <span style="font-size:12.5px;color:#111827;font-weight:500;flex:1">James Dalton</span>
+              <div style="display:flex;align-items:center;gap:6px;flex:1.2">
+                <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:100%;background:#2563eb"></div></div>
+                <span style="font-size:12px;color:#374151;font-weight:500;width:16px;text-align:right">24</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <span style="color:#9ca3af;font-size:12px;width:10px;text-align:center;flex-shrink:0">2</span>
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0">CM</div>
+              <span style="font-size:12.5px;color:#111827;font-weight:500;flex:1">Chris Morgan</span>
+              <div style="display:flex;align-items:center;gap:6px;flex:1.2">
+                <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:75%;background:#2563eb"></div></div>
+                <span style="font-size:12px;color:#374151;font-weight:500;width:16px;text-align:right">18</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <span style="color:#9ca3af;font-size:12px;width:10px;text-align:center;flex-shrink:0">3</span>
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0">TR</div>
+              <span style="font-size:12.5px;color:#111827;font-weight:500;flex:1">Taylor Rivera</span>
+              <div style="display:flex;align-items:center;gap:6px;flex:1.2">
+                <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:62%;background:#2563eb"></div></div>
+                <span style="font-size:12px;color:#374151;font-weight:500;width:16px;text-align:right">15</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <span style="color:#9ca3af;font-size:12px;width:10px;text-align:center;flex-shrink:0">4</span>
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#6d28d9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0">JK</div>
+              <span style="font-size:12.5px;color:#111827;font-weight:500;flex:1">Jordan Kim</span>
+              <div style="display:flex;align-items:center;gap:6px;flex:1.2">
+                <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:50%;background:#2563eb"></div></div>
+                <span style="font-size:12px;color:#374151;font-weight:500;width:16px;text-align:right">12</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+              <span style="color:#9ca3af;font-size:12px;width:10px;text-align:center;flex-shrink:0">5</span>
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#ef4444,#dc2626);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:600;flex-shrink:0">AP</div>
+              <span style="font-size:12.5px;color:#111827;font-weight:500;flex:1">Alex Patel</span>
+              <div style="display:flex;align-items:center;gap:6px;flex:1.2">
+                <div class="progress-bar" style="flex:1"><div class="progress-fill" style="width:37%;background:#2563eb"></div></div>
+                <span style="font-size:12px;color:#374151;font-weight:500;width:16px;text-align:right">9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Opportunities by Stage -->
+        <div class="stat-card" style="padding:0">
+          <div style="padding:14px 16px 10px;font-size:14px;font-weight:600;color:#111827">Opportunities by Stage</div>
+          <hr class="divider"/>
+          <div style="padding:14px 16px;display:flex;align-items:center;gap:14px">
+            <div style="position:relative;width:110px;height:110px;flex-shrink:0">
+              <canvas id="stageChart"></canvas>
+              <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                <div style="font-size:20px;font-weight:700;color:#111827">234</div>
+                <div style="font-size:10px;color:#6b7280">Total</div>
+              </div>
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;background:#3b82f6;border-radius:50%"></div><span style="font-size:11.5px;color:#374151">New</span></div>
+                <span style="font-size:11.5px;color:#374151">24 (10%)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;background:#8b5cf6;border-radius:50%"></div><span style="font-size:11.5px;color:#374151">Contacted</span></div>
+                <span style="font-size:11.5px;color:#374151">37 (16%)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;background:#f59e0b;border-radius:50%"></div><span style="font-size:11.5px;color:#374151">Negotiating</span></div>
+                <span style="font-size:11.5px;color:#374151">28 (12%)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;background:#f97316;border-radius:50%"></div><span style="font-size:11.5px;color:#374151">Appraisal</span></div>
+                <span style="font-size:11.5px;color:#374151">15 (6%)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+                <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;background:#06b6d4;border-radius:50%"></div><span style="font-size:11.5px;color:#374151">Offer Made</span></div>
+                <span style="font-size:11.5px;color:#374151">22 (9%)</span>
+              </div>
+              <div style="display:flex;justify-content:space-between">
+                <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;background:#10b981;border-radius:50%"></div><span style="font-size:11.5px;color:#374151">Closed</span></div>
+                <span style="font-size:11.5px;color:#374151">108 (47%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Stale Opportunities -->
+      <div class="stat-card" style="padding:0">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px 12px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span style="color:#111827;font-size:13.5px;font-weight:600"><span style="color:#ef4444">12</span> opportunities haven't been updated in over 7 days.</span>
+          </div>
+          <div style="flex:1"></div>
+          <!-- Stale Cars -->
+          <div style="display:flex;gap:14px;flex:3">
+            <div style="display:flex;align-items:center;gap:10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;flex:1">
+              <div class="car-placeholder" style="width:80px;height:52px"><svg width="36" height="24" viewBox="0 0 48 28" fill="none"><rect x="2" y="6" width="34" height="18" rx="4" fill="#d1d5db"/><path d="M36 12h9l4 8v4H36V12z" fill="#d1d5db"/><circle cx="9" cy="24" r="4" fill="#9ca3af"/><circle cx="40" cy="24" r="4" fill="#9ca3af"/></svg></div>
+              <div>
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2015 Chevy Malibu LT</div>
+                <div style="font-size:11.5px;color:#6b7280">Mike Anderson</div>
+                <div style="font-size:11px;color:#9ca3af;margin-top:2px">Last activity: 8 days ago</div>
+              </div>
+              <button style="margin-left:auto;background:#2563eb;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer">Reassign</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;flex:1">
+              <div class="car-placeholder" style="width:80px;height:52px"><svg width="36" height="24" viewBox="0 0 48 28" fill="none"><rect x="2" y="6" width="34" height="18" rx="4" fill="#d1d5db"/><path d="M36 12h9l4 8v4H36V12z" fill="#d1d5db"/><circle cx="9" cy="24" r="4" fill="#9ca3af"/><circle cx="40" cy="24" r="4" fill="#9ca3af"/></svg></div>
+              <div>
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2017 Hyundai Elantra SE</div>
+                <div style="font-size:11.5px;color:#6b7280">Jessica Davis</div>
+                <div style="font-size:11px;color:#9ca3af;margin-top:2px">Last activity: 9 days ago</div>
+              </div>
+              <button style="margin-left:auto;background:#2563eb;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer">Reassign</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:10px 12px;flex:1">
+              <div class="car-placeholder" style="width:80px;height:52px"><svg width="36" height="24" viewBox="0 0 48 28" fill="none"><rect x="2" y="6" width="34" height="18" rx="4" fill="#d1d5db"/><path d="M36 12h9l4 8v4H36V12z" fill="#d1d5db"/><circle cx="9" cy="24" r="4" fill="#9ca3af"/><circle cx="40" cy="24" r="4" fill="#9ca3af"/></svg></div>
+              <div>
+                <div style="font-size:12.5px;font-weight:600;color:#111827">2016 Ford Escape SE</div>
+                <div style="font-size:11.5px;color:#6b7280">Robert Wilson</div>
+                <div style="font-size:11px;color:#9ca3af;margin-top:2px">Last activity: 12 days ago</div>
+              </div>
+              <button style="margin-left:auto;background:#2563eb;color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer">Reassign</button>
+            </div>
+          </div>
+          <a class="view-link" style="flex-shrink:0;white-space:nowrap;display:flex;align-items:center;gap:3px">View all stale <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+    </div><!-- end main-content -->
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <div class="right-panel">
+      <!-- Sources Section -->
+      <div style="padding:16px 16px 0">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:14px;font-weight:600;color:#111827">Sources</div>
+          <a class="view-link">Manage</a>
+        </div>
+        <!-- FB -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:28px;height:28px;background:#1877f2;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </div>
+            <span style="font-size:12.5px;color:#374151;font-weight:500">Facebook Marketplace</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge-active">Active</span>
+            <span style="font-size:12.5px;font-weight:600;color:#111827">234</span>
+          </div>
+        </div>
+        <!-- OfferUp -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:28px;height:28px;background:#6b7280;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+              <span style="color:#fff;font-size:10px;font-weight:700">O</span>
+            </div>
+            <span style="font-size:12.5px;color:#374151;font-weight:500">OfferUp</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge-soon">Coming soon</span>
+            <span style="font-size:12.5px;font-weight:600;color:#9ca3af">0</span>
+          </div>
+        </div>
+        <!-- Craigslist -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:28px;height:28px;background:#9ca3af;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+              <span style="color:#fff;font-size:10px;font-weight:700">C</span>
+            </div>
+            <span style="font-size:12.5px;color:#374151;font-weight:500">Craigslist</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge-soon">Coming soon</span>
+            <span style="font-size:12.5px;font-weight:600;color:#9ca3af">0</span>
+          </div>
+        </div>
+        <!-- Inbound Forms -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:28px;height:28px;background:#d1d5db;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="2" width="8" height="8" rx="1"/><path d="M2 10h12v12H2z"/><circle cx="7" cy="7" r="3"/></svg>
+            </div>
+            <span style="font-size:12.5px;color:#374151;font-weight:500">Inbound Forms</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="badge-soon">Coming soon</span>
+            <span style="font-size:12.5px;font-weight:600;color:#9ca3af">0</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" style="margin:14px 0"/>
+
+      <!-- Tasks Due Today -->
+      <div style="padding:0 16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:14px;font-weight:600;color:#111827">Tasks Due Today</div>
+          <a class="view-link">View all (18)</a>
+        </div>
+        <!-- Task items -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div class="checkbox-custom" style="margin-top:1px"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12.5px;font-weight:500;color:#111827">Follow up with Mike Johnson</div>
+              <div style="font-size:11.5px;color:#6b7280">2018 Honda Accord EX</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="color:#ef4444;font-size:11.5px;font-weight:500;margin-bottom:2px">10:30 AM</div>
+              <span class="badge-high">High</span>
+            </div>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div class="checkbox-custom" style="margin-top:1px"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12.5px;font-weight:500;color:#111827">Send offer to Sarah Williams</div>
+              <div style="font-size:11.5px;color:#6b7280">2017 Ford F-150 XLT</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="color:#f97316;font-size:11.5px;font-weight:500;margin-bottom:2px">11:00 AM</div>
+              <span class="badge-med">Medium</span>
+            </div>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div class="checkbox-custom" style="margin-top:1px"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12.5px;font-weight:500;color:#111827">Check in with David Chen</div>
+              <div style="font-size:11.5px;color:#6b7280">2020 Toyota Camry LE</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="color:#f97316;font-size:11.5px;font-weight:500;margin-bottom:2px">12:30 PM</div>
+              <span class="badge-med">Medium</span>
+            </div>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div class="checkbox-custom" style="margin-top:1px"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12.5px;font-weight:500;color:#111827">Confirm appointment</div>
+              <div style="font-size:11.5px;color:#6b7280">Luis Martinez</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:2px">2:00 PM</div>
+              <span class="badge-low">Low</span>
+            </div>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div class="checkbox-custom" style="margin-top:1px"></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12.5px;font-weight:500;color:#111827">Review appraisal</div>
+              <div style="font-size:11.5px;color:#6b7280">2016 BMW 328i</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="color:#6b7280;font-size:11.5px;font-weight:500;margin-bottom:2px">3:30 PM</div>
+              <span class="badge-low">Low</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <a class="view-link" style="display:flex;align-items:center;gap:4px">View all tasks <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        </div>
+      </div>
+
+      <hr class="divider" style="margin:14px 0"/>
+
+      <!-- Recent Activity -->
+      <div style="padding:0 16px 16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:14px;font-weight:600;color:#111827">Recent Activity</div>
+          <a class="view-link">View all</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;flex-shrink:0">CM</div>
+            <div style="flex:1;min-width:0">
+              <span style="font-size:12.5px;color:#111827;font-weight:500">Chris M.</span>
+              <span style="font-size:12px;color:#6b7280"> claimed 2019 Ford F-150 XLT</span>
+            </div>
+            <span style="font-size:11px;color:#9ca3af;flex-shrink:0">2m ago</span>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;flex-shrink:0">TR</div>
+            <div style="flex:1;min-width:0">
+              <span style="font-size:12.5px;color:#111827;font-weight:500">Taylor R.</span>
+              <span style="font-size:12px;color:#6b7280"> added a note to 2017 Honda Accord</span>
+            </div>
+            <span style="font-size:11px;color:#9ca3af;flex-shrink:0">15m ago</span>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#6d28d9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;flex-shrink:0">JK</div>
+            <div style="flex:1;min-width:0">
+              <span style="font-size:12.5px;color:#111827;font-weight:500">Jordan K.</span>
+              <span style="font-size:12px;color:#6b7280"> booked appointment for 2018 BMW 328i</span>
+            </div>
+            <span style="font-size:11px;color:#9ca3af;flex-shrink:0">45m ago</span>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;flex-shrink:0">You</div>
+            <div style="flex:1;min-width:0">
+              <span style="font-size:12.5px;color:#111827;font-weight:500">You</span>
+              <span style="font-size:12px;color:#6b7280"> logged an offer for 2016 Toyota Camry</span>
+            </div>
+            <span style="font-size:11px;color:#9ca3af;flex-shrink:0">1h ago</span>
+          </div>
+          <hr class="divider"/>
+          <div style="display:flex;align-items:flex-start;gap:8px">
+            <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:600;flex-shrink:0">AP</div>
+            <div style="flex:1;min-width:0">
+              <span style="font-size:12.5px;color:#111827;font-weight:500">Alex P.</span>
+              <span style="font-size:12px;color:#6b7280"> updated appraisal for 2020 Jeep Grand Cherokee</span>
+            </div>
+            <span style="font-size:11px;color:#9ca3af;flex-shrink:0">2h ago</span>
+          </div>
+        </div>
+      </div>
+    </div><!-- end right panel -->
+
+  </div><!-- end content+right -->
+</div><!-- end main area -->
+
+</div><!-- end flex wrapper -->
+
+<script>
+// Pipeline Value Line Chart
+const pipeCtx = document.getElementById('pipelineChart').getContext('2d');
+new Chart(pipeCtx, {
+  type: 'line',
+  data: {
+    labels: ['Apr 12','Apr 19','Apr 26','May 3','May 10'],
+    datasets: [{
+      data: [1200000, 1400000, 1600000, 1800000, 2000000, 2100000, 2200000, 2479450],
+      borderColor: '#2563eb',
+      backgroundColor: 'rgba(37,99,235,0.08)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    scales: {
+      x: {
+        ticks: { font: { size: 9 }, color: '#9ca3af' },
+        grid: { display: false },
+        border: { display: false }
+      },
+      y: {
+        ticks: {
+          font: { size: 9 }, color: '#9ca3af',
+          callback: v => v >= 1000000 ? '$' + (v/1000000).toFixed(1) + 'M' : '$' + (v/1000) + 'k'
+        },
+        grid: { color: '#f3f4f6' },
+        border: { display: false }
+      }
+    }
+  }
+});
+
+// Source Donut
+const srcCtx = document.getElementById('sourceChart').getContext('2d');
+new Chart(srcCtx, {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [234, 1, 1, 1],
+      backgroundColor: ['#2563eb', '#93c5fd', '#bfdbfe', '#e0e7ff'],
+      borderWidth: 0,
+      hoverOffset: 2
+    }]
+  },
+  options: {
+    cutout: '72%',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
+});
+
+// Stage Donut
+const stgCtx = document.getElementById('stageChart').getContext('2d');
+new Chart(stgCtx, {
+  type: 'doughnut',
+  data: {
+    datasets: [{
+      data: [24, 37, 28, 15, 22, 108],
+      backgroundColor: ['#3b82f6','#8b5cf6','#f59e0b','#f97316','#06b6d4','#10b981'],
+      borderWidth: 0,
+      hoverOffset: 2
+    }]
+  },
+  options: {
+    cutout: '72%',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+  }
+});
+</script>
+</body>
+</html>
