@@ -16,7 +16,7 @@ import BuyerVehicles from './pages/buyer/Vehicles';
 import BuyerSellers from './pages/buyer/Sellers';
 
 // Manager pages
-import ManagerDashboard from './pages/manager/Dashboard';
+import ManagerDashboard from './pages/manager/ManagerDashboard';
 import ManagerReports from './pages/manager/Reports';
 import ManagerTeam from './pages/manager/Team';
 import ManagerTemplates from './pages/manager/Templates';
