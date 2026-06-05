@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  Calendar, LogOut, Truck 
+  Calendar, LogOut, Truck, Clock, AlertCircle, 
+  CheckCircle, XCircle, FileText, History, 
+  BarChart3, Settings 
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -48,11 +50,39 @@ const AppraisalSidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
       <nav className="flex-1 pt-2">
         <Link to="/appraisal" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <Calendar size={16} className="w-4 h-4 flex-shrink-0" />
-          Dashboard
+          Appraisal Queue
         </Link>
-        <Link to="/appraisal/appraisals" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/appraisals') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Calendar size={16} className="w-4 h-4 flex-shrink-0" />
-          Appraisals
+        <Link to="/appraisal/requested" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/requested') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Clock size={16} className="w-4 h-4 flex-shrink-0" />
+          Requested
+        </Link>
+        <Link to="/appraisal/needs-info" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/needs-info') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <AlertCircle size={16} className="w-4 h-4 flex-shrink-0" />
+          Needs Info
+        </Link>
+        <Link to="/appraisal/approved" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/approved') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <CheckCircle size={16} className="w-4 h-4 flex-shrink-0" />
+          Approved
+        </Link>
+        <Link to="/appraisal/rejected" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/rejected') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <XCircle size={16} className="w-4 h-4 flex-shrink-0" />
+          Rejected
+        </Link>
+        <Link to="/appraisal/vehicle-packets" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/vehicle-packets') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <FileText size={16} className="w-4 h-4 flex-shrink-0" />
+          Vehicle Packets
+        </Link>
+        <Link to="/appraisal/valuation-history" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/valuation-history') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <History size={16} className="w-4 h-4 flex-shrink-0" />
+          Valuation History
+        </Link>
+        <Link to="/appraisal/metrics" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/metrics') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <BarChart3 size={16} className="w-4 h-4 flex-shrink-0" />
+          Metrics
+        </Link>
+        <Link to="/appraisal/settings" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/appraisal/settings') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Settings size={16} className="w-4 h-4 flex-shrink-0" />
+          Settings
         </Link>
       </nav>
 

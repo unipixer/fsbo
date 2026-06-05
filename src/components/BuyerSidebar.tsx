@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
-  LayoutGrid, List, MessageSquare, CheckSquare, 
-  Star, Truck, LogOut 
+  Home, Search, List, LayoutGrid, Clock, 
+  FileText, Calendar, BarChart3, Settings, 
+  LogOut, Truck 
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -48,67 +49,41 @@ const BuyerSidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
       {/* Nav */}
       <nav className="flex-1 pt-2">
         <Link to="/buyer" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <LayoutGrid size={16} className="w-4 h-4 flex-shrink-0" />
-          Dashboard
+          <Home size={16} className="w-4 h-4 flex-shrink-0" />
+          Home
         </Link>
-        <Link to="/buyer/pipeline" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/pipeline') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <LayoutGrid size={16} className="w-4 h-4 flex-shrink-0" />
-          Pipeline
+        <Link to="/buyer/marketplace-searches" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/marketplace-searches') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Search size={16} className="w-4 h-4 flex-shrink-0" />
+          Marketplace Searches
         </Link>
         <Link to="/buyer/opportunities" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/opportunities') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <List size={16} className="w-4 h-4 flex-shrink-0" />
-          Opportunities
+          My Opportunities
         </Link>
-        <Link to="/buyer/tasks" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/tasks') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <MessageSquare size={16} className="w-4 h-4 flex-shrink-0" />
-          Tasks & Follow Ups
+        <Link to="/buyer/pipeline" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/pipeline') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <LayoutGrid size={16} className="w-4 h-4 flex-shrink-0" />
+          My Pipeline
+        </Link>
+        <Link to="/buyer/follow-ups" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/follow-ups') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Clock size={16} className="w-4 h-4 flex-shrink-0" />
+          Follow Ups
+        </Link>
+        <Link to="/buyer/templates" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/templates') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <FileText size={16} className="w-4 h-4 flex-shrink-0" />
+          Templates
         </Link>
         <Link to="/buyer/appointments" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/appointments') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <CheckSquare size={16} className="w-4 h-4 flex-shrink-0" />
+          <Calendar size={16} className="w-4 h-4 flex-shrink-0" />
           Appointments
         </Link>
-        <Link to="/buyer/vehicles" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/vehicles') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Star size={16} className="w-4 h-4 flex-shrink-0" />
-          Vehicles
+        <Link to="/buyer/performance" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/performance') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <BarChart3 size={16} className="w-4 h-4 flex-shrink-0" />
+          Performance
         </Link>
-        <Link to="/buyer/sellers" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/sellers') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Truck size={16} className="w-4 h-4 flex-shrink-0" />
-          Sellers
+        <Link to="/buyer/settings" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/settings') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Settings size={16} className="w-4 h-4 flex-shrink-0" />
+          Settings
         </Link>
-
-        <div className="text-[#6b7280] text-[10px] font-semibold tracking-[0.08em] px-4 pt-4 pb-1 uppercase">Sources</div>
-        <div className="flex items-center gap-2.5 px-4 py-2 text-[#9ca3af] cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 hover:bg-white/7 hover:text-white justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 bg-[#1877f2] rounded-full flex items-center justify-center flex-shrink-0">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="#fff">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-              </svg>
-            </div>
-            <span className="text-[#d1d5db] text-[12.5px]">Facebook Marketplace</span>
-          </div>
-          <span className="bg-[#d1fae5] text-[#059669] text-[10px] px-1.5 py-0.5 rounded-full font-medium">Active</span>
-        </div>
-        <div className="flex items-center gap-2.5 px-4 py-2 text-[#9ca3af] cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 hover:bg-white/7 hover:text-white justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 bg-[#6b7280] rounded-full flex-shrink-0" />
-            <span className="text-[#6b7280] text-[12.5px]">OfferUp</span>
-          </div>
-          <span className="bg-[#f3f4f6] text-[#9ca3af] text-[10px] px-1.5 py-0.5 rounded-full font-medium">Coming soon</span>
-        </div>
-        <div className="flex items-center gap-2.5 px-4 py-2 text-[#9ca3af] cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 hover:bg-white/7 hover:text-white justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 bg-[#6b7280] rounded-full flex-shrink-0" />
-            <span className="text-[#6b7280] text-[12.5px]">Craigslist</span>
-          </div>
-          <span className="bg-[#f3f4f6] text-[#9ca3af] text-[10px] px-1.5 py-0.5 rounded-full font-medium">Coming soon</span>
-        </div>
-        <div className="flex items-center gap-2.5 px-4 py-2 text-[#9ca3af] cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 hover:bg-white/7 hover:text-white justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-5 h-5 bg-[#6b7280] rounded-full flex-shrink-0" />
-            <span className="text-[#6b7280] text-[12.5px]">Inbound Forms</span>
-          </div>
-          <span className="bg-[#f3f4f6] text-[#9ca3af] text-[10px] px-1.5 py-0.5 rounded-full font-medium">Coming soon</span>
-        </div>
       </nav>
 
       {/* Collapse */}

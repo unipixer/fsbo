@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutGrid, Users, Users2, FileText, Settings, 
-  Plug2, CreditCard, LogOut, Truck 
+  LogOut, Truck, AlertCircle, ClipboardList, 
+  BarChart3, UserCheck, Wrench 
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -49,17 +50,39 @@ const ManagerSidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
       <nav className="flex-1 pt-2">
         <Link to="/manager" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <LayoutGrid size={16} className="w-4 h-4 flex-shrink-0" />
-          Dashboard
+          Overview
+        </Link>
+        <Link to="/manager/team-board" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/team-board') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Users size={16} className="w-4 h-4 flex-shrink-0" />
+          Team Board
+        </Link>
+        <Link to="/manager/pipeline" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/pipeline') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <LayoutGrid size={16} className="w-4 h-4 flex-shrink-0" />
+          Pipeline
+        </Link>
+        <Link to="/manager/stuck-work" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/stuck-work') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <AlertCircle size={16} className="w-4 h-4 flex-shrink-0" />
+          Stuck Work
+        </Link>
+        <Link to="/manager/all-opportunities" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/all-opportunities') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <ClipboardList size={16} className="w-4 h-4 flex-shrink-0" />
+          All Opportunities
+        </Link>
+        <Link to="/manager/assignments" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/assignments') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Users2 size={16} className="w-4 h-4 flex-shrink-0" />
+          Assignments
         </Link>
         <Link to="/manager/reports" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/reports') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Users size={16} className="w-4 h-4 flex-shrink-0" />
+          <BarChart3 size={16} className="w-4 h-4 flex-shrink-0" />
           Reports
         </Link>
-
-        <div className="text-[#6b7280] text-[10px] font-semibold tracking-[0.08em] px-4 pt-4 pb-1 uppercase">Management</div>
-        <Link to="/manager/team" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/team') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Users2 size={16} className="w-4 h-4 flex-shrink-0" />
-          Team
+        <Link to="/manager/buyers" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/buyers') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <UserCheck size={16} className="w-4 h-4 flex-shrink-0" />
+          Buyers
+        </Link>
+        <Link to="/manager/appraisers" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/appraisers') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
+          <Wrench size={16} className="w-4 h-4 flex-shrink-0" />
+          Appraisers
         </Link>
         <Link to="/manager/templates" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/templates') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <FileText size={16} className="w-4 h-4 flex-shrink-0" />
@@ -68,14 +91,6 @@ const ManagerSidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
         <Link to="/manager/settings" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/settings') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
           <Settings size={16} className="w-4 h-4 flex-shrink-0" />
           Settings
-        </Link>
-        <Link to="/manager/integrations" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/integrations') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Plug2 size={16} className="w-4 h-4 flex-shrink-0" />
-          Integrations
-        </Link>
-        <Link to="/manager/billing" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/manager/billing') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <CreditCard size={16} className="w-4 h-4 flex-shrink-0" />
-          Billing
         </Link>
       </nav>
 
