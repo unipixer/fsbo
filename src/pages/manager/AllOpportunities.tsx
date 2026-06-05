@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Search, Filter, ChevronDown } from 'lucide-react';
+import { Search, Filter, ChevronDown } from 'lucide-react';
 
 const AllOpportunities: React.FC = () => {
   return (

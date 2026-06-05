@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  CreditCard, Download, AlertCircle, CheckCircle, Calendar, 
-  DollarSign, TrendingUp, FileText, Plus
+  CreditCard, Download, AlertCircle, CheckCircle, 
+  TrendingUp, FileText, Plus
 } from 'lucide-react';
 
 const Billing: React.FC = () => {

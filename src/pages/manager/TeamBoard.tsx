@@ -1,5 +1,4 @@
 import React from 'react';
-import { Users, LayoutGrid, AlertCircle, Clock } from 'lucide-react';
 
 const TeamBoard: React.FC = () => {
   return (

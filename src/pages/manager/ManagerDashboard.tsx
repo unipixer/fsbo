@@ -1,7 +1,7 @@
 const avatarColors = ["#6c63ff", "#f59e0b", "#10b981", "#ef4444", "#3b82f6"];
 
-function Avatar({ name, size = 8, index = 0 }) {
-  const initials = name.split(" ").map((n) => n[0]).join("").slice(0, 2);
+function Avatar({ name, size = 8, index = 0 }: { name: string; size?: number; index?: number }) {
+  const initials = name.split(" ").map((n: string) => n[0]).join("").slice(0, 2);
   const bg = avatarColors[index % avatarColors.length];
   return (
     <div
@@ -15,7 +15,7 @@ function Avatar({ name, size = 8, index = 0 }) {
 
 // Stat card icons — colored to match image exactly
 // Listings: blue/indigo document icon
-const IconDocument = ({ c }) => (
+const IconDocument = ({ c }: { c: string }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
     <polyline points="14 2 14 8 20 8"/>
@@ -23,34 +23,34 @@ const IconDocument = ({ c }) => (
   </svg>
 );
 // Claims: teal clipboard
-const IconClipboard = ({ c }) => (
+const IconClipboard = ({ c }: { c: string }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
     <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
   </svg>
 );
 // First Messages: green check circle
-const IconCheckCircle = ({ c }) => (
+const IconCheckCircle = ({ c }: { c: string }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
     <polyline points="22 4 12 14.01 9 11.01"/>
   </svg>
 );
 // Replies: orange message bubble
-const IconMessageCircle = ({ c }) => (
+const IconMessageCircle = ({ c }: { c: string }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
   </svg>
 );
 // Appraisals: purple tag/price
-const IconTag = ({ c }) => (
+const IconTag = ({ c }: { c: string }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
     <line x1="7" y1="7" x2="7.01" y2="7"/>
   </svg>
 );
 // Purchases: green shopping bag
-const IconShoppingBag = ({ c }) => (
+const IconShoppingBag = ({ c }: { c: string }) => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
     <line x1="3" y1="6" x2="21" y2="6"/>
@@ -59,30 +59,30 @@ const IconShoppingBag = ({ c }) => (
 );
 
 // Activity icons
-const IconMail = ({ c }) => (
+const IconMail = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
     <polyline points="22,6 12,13 2,6"/>
   </svg>
 );
-const IconFileText = ({ c }) => (
+const IconFileText = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
     <polyline points="14 2 14 8 20 8"/>
     <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
   </svg>
 );
-const IconMessageSquare = ({ c }) => (
+const IconMessageSquare = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
   </svg>
 );
-const IconSearch = ({ c }) => (
+const IconSearch = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
   </svg>
 );
-const IconCalendar = ({ c }) => (
+const IconCalendar = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
     <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
@@ -90,57 +90,52 @@ const IconCalendar = ({ c }) => (
 );
 
 // Stuck Work icons
-const IconClock = ({ c }) => (
+const IconClock = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
   </svg>
 );
-const IconSend = ({ c }) => (
+const IconSend = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
   </svg>
 );
-const IconMailSmall = ({ c }) => (
+const IconMailSmall = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
     <polyline points="22,6 12,13 2,6"/>
   </svg>
 );
-const IconMsgCircle = ({ c }) => (
+const IconMsgCircle = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
   </svg>
 );
-const IconAlertCircle = ({ c }) => (
+const IconAlertCircle = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
   </svg>
 );
 
 // Header icons
-const IconBell = ({ c = "#6b7280" }) => (
+const IconBell = ({ c = "#6b7280" }: { c?: string }) => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
     <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
   </svg>
 );
-const IconRefresh = ({ c = "#6b7280" }) => (
+const IconRefresh = ({ c = "#6b7280" }: { c?: string }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polyline points="23 4 23 10 17 10"/>
     <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
   </svg>
 );
-const IconFilter = ({ c = "#6b7280" }) => (
+const IconFilter = ({ c = "#6b7280" }: { c?: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
   </svg>
 );
-const IconSearchHeader = ({ c = "#9ca3af" }) => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-  </svg>
-);
-const IconCalHeader = ({ c = "#6b7280" }) => (
+const IconCalHeader = ({ c = "#6b7280" }: { c?: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
     <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
@@ -148,19 +143,19 @@ const IconCalHeader = ({ c = "#6b7280" }) => (
 );
 
 // Alert icons
-const IconWarning = ({ c }) => (
+const IconWarning = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
     <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
   </svg>
 );
-const IconAlertBlue = ({ c }) => (
+const IconAlertBlue = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
   </svg>
 );
-const IconAlertRed = ({ c }) => (
+const IconAlertRed = ({ c }: { c: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <polyline points="12 6 12 12 16 14"/>
@@ -168,18 +163,18 @@ const IconAlertRed = ({ c }) => (
 );
 
 // Follow-ups icons
-const IconFollowUp = ({ c }) => (
+const IconFollowUp = ({ c }: { c: string }) => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
     <polyline points="14 2 14 8 20 8"/>
   </svg>
 );
-const IconSnoozed = ({ c }) => (
+const IconSnoozed = ({ c }: { c: string }) => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
   </svg>
 );
-const IconNeedsInfo = ({ c }) => (
+const IconNeedsInfo = ({ c }: { c: string }) => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"/>
     <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
@@ -188,7 +183,7 @@ const IconNeedsInfo = ({ c }) => (
 
 // ── Stat Card ─────────────────────────────────────────────────────────────────
 
-function StatCard({ iconEl, iconBg, label, value, change }) {
+function StatCard({ iconEl, iconBg, label, value, change }: { iconEl: any; iconBg: string; label: string; value: string | number; change: string }) {
   return (
     <div className="bg-white rounded-2xl p-5 flex items-start gap-3 flex-1 min-w-0 shadow-sm border border-gray-100">
       <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: iconBg }}>

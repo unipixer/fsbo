@@ -265,12 +265,6 @@ const Opportunities: React.FC = () => {
     }
   };
 
-  const getStageBadge = (stage: string) => {
-    const stageConfig = stages.find(s => s.id === stage);
-    return stageConfig 
-      ? `text-xs px-2 py-0.5 rounded-full font-medium`
-      : '';
-  };
 
   const filteredOpportunities = opportunities.filter(opp => {
     const matchesSource = selectedSource === 'all' || opp.source === selectedSource;

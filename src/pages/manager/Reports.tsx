@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  Download, Filter, Calendar, TrendingUp, DollarSign, 
+  Download, Calendar, TrendingUp, DollarSign, 
   Car, Users, BarChart3, PieChart
 } from 'lucide-react';
 

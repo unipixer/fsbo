@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserCheck, Plus, Mail, Phone, Calendar } from 'lucide-react';
+import { Plus, Mail, Phone } from 'lucide-react';
 
 const Buyers: React.FC = () => {
   return (
