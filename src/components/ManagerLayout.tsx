@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import ManagerSidebar from './ManagerSidebar';
 import Topbar from './Topbar';
 
-const Layout: React.FC = () => {
+const ManagerLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Sidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <ManagerSidebar isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <Topbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} isSidebarOpen={isSidebarOpen} />
@@ -21,4 +21,4 @@ const Layout: React.FC = () => {
   );
 };
 
-export default Layout;
+export default ManagerLayout;

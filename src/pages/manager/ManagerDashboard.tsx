@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const avatarColors = ["#6c63ff", "#f59e0b", "#10b981", "#ef4444", "#3b82f6"];
 
 function Avatar({ name, size = 8, index = 0 }) {
@@ -14,88 +12,6 @@ function Avatar({ name, size = 8, index = 0 }) {
     </div>
   );
 }
-
-// ── SVG Icon Components ─────────────────────────────────────────────────────
-
-// Sidebar nav icons — white/muted purple
-const IconOverview = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-  </svg>
-);
-const IconTeam = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-    <circle cx="9" cy="7" r="4"/>
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-  </svg>
-);
-const IconPipeline = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-  </svg>
-);
-const IconStuck = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-  </svg>
-);
-const IconOpportunities = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-  </svg>
-);
-const IconAppraisals = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>
-  </svg>
-);
-const IconActivity = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-  </svg>
-);
-const IconReports = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-  </svg>
-);
-const IconBuyers = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-  </svg>
-);
-const IconAppraisers = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-  </svg>
-);
-const IconTemplates = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-    <line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
-  </svg>
-);
-const IconStages = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
-    <line x1="4" y1="22" x2="4" y2="15"/>
-  </svg>
-);
-const IconSaved = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-  </svg>
-);
-const IconSettings = ({ c = "currentColor" }) => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-  </svg>
-);
 
 // Stat card icons — colored to match image exactly
 // Listings: blue/indigo document icon
@@ -230,18 +146,6 @@ const IconCalHeader = ({ c = "#6b7280" }) => (
     <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
   </svg>
 );
-const IconHelpCircle = ({ c = "#9ca3af" }) => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-  </svg>
-);
-const IconCar = ({ c = "white" }) => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2"/>
-    <circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>
-  </svg>
-);
 
 // Alert icons
 const IconWarning = ({ c }) => (
@@ -295,25 +199,6 @@ function StatCard({ iconEl, iconBg, label, value, change }) {
         <p className="text-2xl font-bold text-gray-900 leading-tight">{value}</p>
         <p className="text-xs font-medium mt-0.5" style={{ color: "#10b981" }}>↑ {change} vs last week</p>
       </div>
-    </div>
-  );
-}
-
-// ── Nav Item ──────────────────────────────────────────────────────────────────
-
-function NavItem({ iconEl, label, active, badge }) {
-  return (
-    <div
-      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl cursor-pointer transition-all ${active ? "text-white font-semibold" : "text-purple-300 hover:text-white hover:bg-white/5"}`}
-      style={active ? { background: "rgba(255,255,255,0.18)" } : {}}
-    >
-      <span className="flex-shrink-0">{iconEl}</span>
-      <span className="text-sm">{label}</span>
-      {badge && (
-        <span className="ml-auto bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
-          {badge}
-        </span>
-      )}
     </div>
   );
 }
@@ -406,27 +291,6 @@ function DonutChart() {
 // ── Main Dashboard ────────────────────────────────────────────────────────────
 
 export default function ManagerDashboard() {
-  const [activeNav, setActiveNav] = useState("Overview");
-
-  const navItems = [
-    { iconEl:<IconOverview   c={activeNav==="Overview"   ?"white":"#c4b5fd"}/>, label:"Overview",      key:"Overview"       },
-    { iconEl:<IconTeam       c={activeNav==="Team Board" ?"white":"#c4b5fd"}/>, label:"Team Board",    key:"Team Board"     },
-    { iconEl:<IconPipeline   c={activeNav==="Pipeline"   ?"white":"#c4b5fd"}/>, label:"Pipeline",      key:"Pipeline"       },
-    { iconEl:<IconStuck      c={activeNav==="Stuck Work" ?"white":"#c4b5fd"}/>, label:"Stuck Work",    key:"Stuck Work", badge:23 },
-    { iconEl:<IconOpportunities c={activeNav==="Opportunities"?"white":"#c4b5fd"}/>, label:"Opportunities", key:"Opportunities" },
-    { iconEl:<IconAppraisals c={activeNav==="Appraisals" ?"white":"#c4b5fd"}/>, label:"Appraisals",    key:"Appraisals"     },
-    { iconEl:<IconActivity   c={activeNav==="Activity"   ?"white":"#c4b5fd"}/>, label:"Activity",      key:"Activity"       },
-    { iconEl:<IconReports    c={activeNav==="Reports"    ?"white":"#c4b5fd"}/>, label:"Reports",       key:"Reports"        },
-  ];
-  const manageItems = [
-    { iconEl:<IconBuyers    c="#c4b5fd"/>, label:"Buyers",         key:"Buyers"         },
-    { iconEl:<IconAppraisers c="#c4b5fd"/>,label:"Appraisers",     key:"Appraisers"     },
-    { iconEl:<IconTemplates c="#c4b5fd"/>, label:"Templates",      key:"Templates"      },
-    { iconEl:<IconStages    c="#c4b5fd"/>, label:"Stages & Flags", key:"Stages & Flags" },
-    { iconEl:<IconSaved     c="#c4b5fd"/>, label:"Saved Searches", key:"Saved Searches" },
-    { iconEl:<IconSettings  c="#c4b5fd"/>, label:"Settings",       key:"Settings"       },
-  ];
-
   const colHeaders = [
     { label:"Claimed",        sub:"32", color:"#6c63ff" },
     { label:"Contacted",      sub:"18", color:"#3b82f6" },
@@ -439,103 +303,46 @@ export default function ManagerDashboard() {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden" style={{fontFamily:"'DM Sans',sans-serif"}}>
+    <div className="flex-1 flex flex-col overflow-hidden">
 
-      {/* ── Sidebar ── */}
-      <aside className="w-56 flex-shrink-0 flex flex-col h-full" style={{background:"linear-gradient(180deg,#2d1b6e 0%,#1e1254 100%)"}}>
-        {/* Logo */}
-        <div className="flex items-center gap-2.5 px-4 py-5">
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{background:"rgba(255,255,255,0.15)"}}>
-            <IconCar c="white"/>
-          </div>
-          <span className="font-bold text-sm text-white">Acquisition Assistant</span>
+      {/* Header */}
+      <header className="flex items-center gap-3 px-6 py-3.5 bg-white border-b border-gray-100 flex-shrink-0">
+        <h1 className="text-lg font-bold text-gray-900 mr-2">Manager Dashboard</h1>
+        <div className="flex-1 max-w-md relative">
+          <span className="absolute left-3 top-1/2 -translate-y-1/2"><IconSearchHeader/></span>
+          <input type="text" placeholder="Search opportunities, sellers, VIN, or buyers..."
+            className="w-full pl-9 pr-16 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-purple-400 transition-colors"/>
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded">⌘K</span>
         </div>
-
-        {/* Company */}
-        <div className="mx-3 mb-4 px-3 py-2.5 rounded-xl flex items-center gap-2 cursor-pointer" style={{background:"rgba(255,255,255,0.1)"}}>
-          <div className="w-7 h-7 rounded-lg bg-purple-400/40 flex items-center justify-center text-xs font-bold text-white">A</div>
-          <div className="min-w-0">
-            <p className="text-xs font-semibold text-white truncate">ABC Motors</p>
-            <p className="text-xs text-purple-300 truncate">Buy Center</p>
-          </div>
-          <span className="ml-auto text-purple-300 text-xs">▾</span>
+        <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors ml-auto">
+          <IconCalHeader c="#6b7280"/>
+          <span className="font-medium">This Week: May 26 – Jun 1, 2025</span>
+          <span className="text-gray-400">▾</span>
         </div>
-
-        <nav className="flex-1 px-2 space-y-0.5 overflow-y-auto">
-          {navItems.map((item)=>(
-            <div key={item.key} onClick={()=>setActiveNav(item.key)}>
-              <NavItem iconEl={item.iconEl} label={item.label} active={activeNav===item.key} badge={item.badge}/>
-            </div>
-          ))}
-          <div className="pt-4 pb-1 px-4">
-            <p className="text-xs text-purple-400 font-semibold tracking-widest uppercase">Manage</p>
-          </div>
-          {manageItems.map((item)=>(
-            <div key={item.key} onClick={()=>setActiveNav(item.key)}>
-              <NavItem iconEl={item.iconEl} label={item.label} active={activeNav===item.key}/>
-            </div>
-          ))}
-        </nav>
-
-        {/* Pro Plan */}
-        <div className="px-4 pb-4 space-y-3">
-          <div>
-            <div className="flex justify-between text-xs text-purple-300 mb-1">
-              <span>Pro Plan</span><span>24 of 50 Users</span>
-            </div>
-            <div className="h-1.5 rounded-full" style={{background:"rgba(255,255,255,0.1)"}}>
-              <div className="h-full rounded-full w-1/2" style={{background:"linear-gradient(90deg,#a78bfa,#7c3aed)"}}/>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 cursor-pointer text-purple-300 hover:text-white transition-colors">
-            <IconHelpCircle c="#c4b5fd"/>
-            <span className="text-xs">Need help?</span>
-            <span className="ml-auto text-xs">›</span>
-          </div>
-        </div>
-      </aside>
-
-      {/* ── Main ── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-
-        {/* Header */}
-        <header className="flex items-center gap-3 px-6 py-3.5 bg-white border-b border-gray-100 flex-shrink-0">
-          <h1 className="text-lg font-bold text-gray-900 mr-2">Manager Dashboard</h1>
-          <div className="flex-1 max-w-md relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2"><IconSearchHeader/></span>
-            <input type="text" placeholder="Search opportunities, sellers, VIN, or buyers..."
-              className="w-full pl-9 pr-16 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-purple-400 transition-colors"/>
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded">⌘K</span>
-          </div>
-          <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors ml-auto">
-            <IconCalHeader c="#6b7280"/>
-            <span className="font-medium">This Week: May 26 – Jun 1, 2025</span>
-            <span className="text-gray-400">▾</span>
-          </div>
+        <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
+          <IconRefresh/>
+        </button>
+        <button className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors">
+          <IconFilter/><span className="font-medium">Filters</span><span className="text-gray-400">▾</span>
+        </button>
+        <div className="relative">
           <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
-            <IconRefresh/>
+            <IconBell/>
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors">
-            <IconFilter/><span className="font-medium">Filters</span><span className="text-gray-400">▾</span>
-          </button>
-          <div className="relative">
-            <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
-              <IconBell/>
-            </button>
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
+        </div>
+        <div className="flex items-center gap-2 cursor-pointer">
+          <Avatar name="Shanto Rahman" index={0} size={9}/>
+          <div>
+            <p className="text-xs font-semibold text-gray-900 leading-tight">Shanto Rahman</p>
+            <p className="text-xs text-gray-400">Manager</p>
           </div>
-          <div className="flex items-center gap-2 cursor-pointer">
-            <Avatar name="Shanto Rahman" index={0} size={9}/>
-            <div>
-              <p className="text-xs font-semibold text-gray-900 leading-tight">Shanto Rahman</p>
-              <p className="text-xs text-gray-400">Manager</p>
-            </div>
-            <span className="text-gray-400 text-xs">▾</span>
-          </div>
-        </header>
+          <span className="text-gray-400 text-xs">▾</span>
+        </div>
+      </header>
 
-        {/* Scrollable Body */}
-        <div className="flex-1 overflow-y-auto p-6">
+      {/* Scrollable Body */}
+      <div className="flex-1 overflow-y-auto p-6">
 
           {/* Stat Cards */}
           <div className="flex gap-4 mb-6">
@@ -750,6 +557,5 @@ export default function ManagerDashboard() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

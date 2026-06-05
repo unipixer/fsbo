@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
+import BuyerLayout from './components/BuyerLayout';
+import ManagerLayout from './components/ManagerLayout';
+import AppraisalLayout from './components/AppraisalLayout';
 import BuyerDashboard from './pages/buyer/BuyerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
@@ -37,97 +40,47 @@ function App() {
           
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
-            
-            {/* Buyer Routes - Protected for buyer role */}
-            <Route path="buyer" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/pipeline" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerPipeline />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/opportunities" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerOpportunities />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/conversations" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerConversations />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/tasks" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerTasks />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/appointments" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerAppointments />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/vehicles" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerVehicles />
-              </ProtectedRoute>
-            } />
-            <Route path="buyer/sellers" element={
-              <ProtectedRoute allowedRoles={['buyer']}>
-                <BuyerSellers />
-              </ProtectedRoute>
-            } />
-            
-            {/* Manager Routes - Protected for manager role */}
-            <Route path="manager" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="manager/reports" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerReports />
-              </ProtectedRoute>
-            } />
-            <Route path="manager/team" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerTeam />
-              </ProtectedRoute>
-            } />
-            <Route path="manager/templates" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerTemplates />
-              </ProtectedRoute>
-            } />
-            <Route path="manager/settings" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerSettings />
-              </ProtectedRoute>
-            } />
-            <Route path="manager/integrations" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerIntegrations />
-              </ProtectedRoute>
-            } />
-            <Route path="manager/billing" element={
-              <ProtectedRoute allowedRoles={['manager']}>
-                <ManagerBilling />
-              </ProtectedRoute>
-            } />
-            
-            {/* Appraisal Routes - Protected for appraisal role */}
-            <Route path="appraisal" element={
-              <ProtectedRoute allowedRoles={['appraisal']}>
-                <AppraisalDashboard />
-              </ProtectedRoute>
-            } />
-            <Route path="appraisal/appraisals" element={
-              <ProtectedRoute allowedRoles={['appraisal']}>
-                <AppraisalAppraisals />
-              </ProtectedRoute>
-            } />
+          </Route>
+
+          {/* Buyer Routes - Protected for buyer role with BuyerLayout */}
+          <Route path="/buyer" element={
+            <ProtectedRoute allowedRoles={['buyer']}>
+              <BuyerLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<BuyerDashboard />} />
+            <Route path="pipeline" element={<BuyerPipeline />} />
+            <Route path="opportunities" element={<BuyerOpportunities />} />
+            <Route path="conversations" element={<BuyerConversations />} />
+            <Route path="tasks" element={<BuyerTasks />} />
+            <Route path="appointments" element={<BuyerAppointments />} />
+            <Route path="vehicles" element={<BuyerVehicles />} />
+            <Route path="sellers" element={<BuyerSellers />} />
+          </Route>
+
+          {/* Manager Routes - Protected for manager role with ManagerLayout */}
+          <Route path="/manager" element={
+            <ProtectedRoute allowedRoles={['manager']}>
+              <ManagerLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<ManagerDashboard />} />
+            <Route path="reports" element={<ManagerReports />} />
+            <Route path="team" element={<ManagerTeam />} />
+            <Route path="templates" element={<ManagerTemplates />} />
+            <Route path="settings" element={<ManagerSettings />} />
+            <Route path="integrations" element={<ManagerIntegrations />} />
+            <Route path="billing" element={<ManagerBilling />} />
+          </Route>
+
+          {/* Appraisal Routes - Protected for appraisal role with AppraisalLayout */}
+          <Route path="/appraisal" element={
+            <ProtectedRoute allowedRoles={['appraisal']}>
+              <AppraisalLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<AppraisalDashboard />} />
+            <Route path="appraisals" element={<AppraisalAppraisals />} />
           </Route>
         </Routes>
       </BrowserRouter>
