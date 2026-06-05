@@ -306,13 +306,8 @@ export default function ManagerDashboard() {
     <div className="flex-1 flex flex-col overflow-hidden">
 
       {/* Header */}
-      <header className="flex items-center gap-3 px-6 py-3.5 bg-white border-b border-gray-100 flex-shrink-0">
-        <div className="flex-1 max-w-md relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2"><IconSearchHeader/></span>
-          <input type="text" placeholder="Search opportunities, sellers, VIN, or buyers..."
-            className="w-full pl-9 pr-16 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-purple-400 transition-colors"/>
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 bg-gray-200 px-1.5 py-0.5 rounded">⌘K</span>
-        </div>
+      <header className="flex items-center gap-3 px-6 py-3.5  border-b border-gray-100 flex-shrink-0">
+        
         <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors ml-auto">
           <IconCalHeader c="#6b7280"/>
           <span className="font-medium">This Week: May 26 – Jun 1, 2025</span>

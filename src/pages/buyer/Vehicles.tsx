@@ -213,33 +213,53 @@ const Vehicles: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-4 gap-3 mb-4">
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">In Inventory</div>
-              <Car size={14} color="#10b981" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">In Inventory</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{inventoryCount}</div>
+                <div className="text-xs text-gray-400">Total vehicles</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-green-100">
+                <Car size={20} color="#10b981" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{inventoryCount}</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Sold This Month</div>
-              <DollarSign size={14} color="#6b7280" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Sold This Month</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{soldCount}</div>
+                <div className="text-xs text-gray-400">Total sales</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-gray-100">
+                <DollarSign size={20} color="#6b7280" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{soldCount}</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Pending</div>
-              <Calendar size={14} color="#f59e0b" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Pending</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{pendingCount}</div>
+                <div className="text-xs text-gray-400">Awaiting action</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-orange-100">
+                <Calendar size={20} color="#f59e0b" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{pendingCount}</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Inventory Value</div>
-              <DollarSign size={14} color="#3b82f6" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Inventory Value</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">${totalValue.toLocaleString()}</div>
+                <div className="text-xs text-gray-400">Total value</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-blue-100">
+                <DollarSign size={20} color="#3b82f6" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">${totalValue.toLocaleString()}</div>
           </div>
         </div>
 

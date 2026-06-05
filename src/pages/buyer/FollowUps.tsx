@@ -16,36 +16,39 @@ const FollowUps: React.FC = () => {
 
       {/* Follow Up Stats */}
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-              <Clock size={20} color="#ef4444" />
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Overdue</div>
+              <div className="text-3xl font-bold text-gray-900 leading-none mb-2">5</div>
+              <div className="text-xs text-gray-500">Requires attention</div>
             </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">5</div>
-              <div className="text-xs text-gray-500">Overdue</div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-              <Calendar size={20} color="#f97316" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">12</div>
-              <div className="text-xs text-gray-500">Due Today</div>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-red-100">
+              <Clock size={20} color="#ef4444" strokeWidth={2} />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg border border-gray-200 p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <MessageSquare size={20} color="#2563eb" />
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Due Today</div>
+              <div className="text-3xl font-bold text-gray-900 leading-none mb-2">12</div>
+              <div className="text-xs text-gray-500">Scheduled</div>
             </div>
-            <div>
-              <div className="text-2xl font-bold text-gray-900">28</div>
-              <div className="text-xs text-gray-500">Upcoming</div>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-orange-100">
+              <Calendar size={20} color="#f97316" strokeWidth={2} />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+          <div className="flex items-start justify-between">
+            <div className="flex-1">
+              <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Upcoming</div>
+              <div className="text-3xl font-bold text-gray-900 leading-none mb-2">28</div>
+              <div className="text-xs text-gray-500">Future tasks</div>
+            </div>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-blue-100">
+              <MessageSquare size={20} color="#2563eb" strokeWidth={2} />
             </div>
           </div>
         </div>

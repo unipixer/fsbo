@@ -160,33 +160,53 @@ const Templates: React.FC = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-4 gap-3 mb-4">
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Total Templates</div>
-              <FileText size={14} color="#3b82f6" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Total Templates</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{totalTemplates}</div>
+                <div className="text-xs text-gray-400">All templates</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-blue-100">
+                <FileText size={20} color="#3b82f6" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{totalTemplates}</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Active</div>
-              <CheckCircle size={14} color="#10b981" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Active</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{activeTemplates}</div>
+                <div className="text-xs text-gray-400">Currently in use</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-green-100">
+                <CheckCircle size={20} color="#10b981" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{activeTemplates}</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Total Usage</div>
-              <MessageSquare size={14} color="#8b5cf6" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Total Usage</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{totalUsage}</div>
+                <div className="text-xs text-gray-400">Messages sent</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-purple-100">
+                <MessageSquare size={20} color="#8b5cf6" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">{totalUsage}</div>
           </div>
-          <div className="bg-white rounded-lg border border-gray-200 p-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-[10.5px] text-gray-500">Categories</div>
-              <AlertCircle size={14} color="#f59e0b" />
+          <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">Categories</div>
+                <div className="text-3xl font-bold text-gray-900 leading-none mb-2">4</div>
+                <div className="text-xs text-gray-400">Template types</div>
+              </div>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm bg-orange-100">
+                <AlertCircle size={20} color="#f59e0b" strokeWidth={2} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-gray-900">4</div>
           </div>
         </div>
 

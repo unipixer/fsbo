@@ -22,18 +22,18 @@ const StatCard: React.FC<StatCardProps> = ({
   iconColor 
 }) => {
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
+    <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
       <div className="flex items-start justify-between">
-        <div>
-          <div className="text-gray-500 text-xs font-medium mb-1.5">{title}</div>
-          <div className="text-2xl font-bold text-gray-900 leading-none">{value}</div>
-          <div className="flex items-center gap-1 mt-1.25">
-            <span className="text-xs font-medium" style={{ color: changeColor }}>{change}</span>
+        <div className="flex-1">
+          <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-2">{title}</div>
+          <div className="text-3xl font-bold text-gray-900 leading-none mb-2">{value}</div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold px-2 py-0.5 rounded-full" style={{ backgroundColor: `${changeColor}15`, color: changeColor }}>{change}</span>
+            <span className="text-xs text-gray-400">{subtitle}</span>
           </div>
-          <div className="text-gray-400 text-[10.5px] mt-0.5">{subtitle}</div>
         </div>
-        <div className="w-8.5 h-8.5 rounded-lg flex items-center justify-center" style={{ background: iconBg }}>
-          <Icon size={17} color={iconColor} />
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-sm" style={{ background: iconBg }}>
+          <Icon size={20} color={iconColor} strokeWidth={2} />
         </div>
       </div>
     </div>
