@@ -159,7 +159,7 @@ const Pipeline: React.FC = () => {
       lastActivity: '30 minutes ago',
       priority: 'medium',
       notes: 'Fresh listing, just contacted',
-      image: '/images/car7.jpg'
+      image: '/images/car1.jpg'
     },
     {
       id: '8',
@@ -178,7 +178,7 @@ const Pipeline: React.FC = () => {
       followUpDate: 'Today, 5:00 PM',
       priority: 'high',
       notes: 'Seller asking for more time',
-      image: '/images/car8.jpg'
+      image: '/images/car3.jpg'
     }
   ];
 
