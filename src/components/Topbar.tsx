@@ -1,5 +1,7 @@
 import React from 'react';
-import { Menu, Search, Plus, Calendar, Bell, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Menu, Search, Plus, Calendar, Bell, ChevronDown, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface TopbarProps {
   onToggleSidebar: () => void;
@@ -7,6 +9,18 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('');
+  };
+
   return (
     <div className="bg-white border-b border-gray-200 h-14 flex items-center px-5 gap-3 sticky top-0 z-10">
       <button onClick={onToggleSidebar} className="bg-transparent border-none cursor-pointer text-gray-500 p-1">
@@ -28,14 +42,24 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
         <Bell size={17} color="#6b7280" />
         <span className="absolute -top-0.25 -right-0.25 w-3.5 h-3.5 bg-red-500 rounded-full text-[8.5px] text-white flex items-center justify-center font-semibold">8</span>
       </div>
-      <div className="flex items-center gap-2 cursor-pointer">
-        <div className="w-7.5 h-7.5 rounded-full flex items-center justify-center text-white text-xs font-semibold bg-gradient-to-br from-blue-500 to-blue-700">JD</div>
+      <div className="flex items-center gap-2">
+        <div className="w-7.5 h-7.5 rounded-full flex items-center justify-center text-white text-xs font-semibold bg-gradient-to-br from-blue-500 to-blue-700">
+          {user ? getInitials(user.name) : 'JD'}
+        </div>
         <div>
-          <div className="text-xs font-semibold text-gray-900 leading-tight">James Dalton</div>
-          <div className="text-[11px] text-gray-500">Buyer</div>
+          <div className="text-xs font-semibold text-gray-900 leading-tight">{user ? user.name : 'James Dalton'}</div>
+          <div className="text-[11px] text-gray-500 capitalize">{user ? user.role : 'Buyer'}</div>
         </div>
         <ChevronDown size={13} color="#6b7280" />
       </div>
+      <button 
+        onClick={handleLogout}
+        className="ml-2 flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+        title="Logout"
+      >
+        <LogOut size={14} />
+        <span className="hidden sm:inline">Logout</span>
+      </button>
     </div>
   );
 };

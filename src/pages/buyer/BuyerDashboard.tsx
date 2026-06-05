@@ -1,18 +1,18 @@
 import React from 'react';
 import { Calendar, ChevronDown } from 'lucide-react';
-import StatCard from './StatCard';
-import FollowUps from './FollowUps';
-import PipelineOverview from './PipelineOverview';
-import OpportunitiesBySource from './OpportunitiesBySource';
-import TopBuyers from './TopBuyers';
-import OpportunitiesByStage from './OpportunitiesByStage';
-import StaleOpportunities from './StaleOpportunities';
-import RightPanel from './RightPanel';
+import StatCard from '../../components/StatCard';
+import FollowUps from '../../components/FollowUps';
+import PipelineOverview from '../../components/PipelineOverview';
+import OpportunitiesBySource from '../../components/OpportunitiesBySource';
+import TopBuyers from '../../components/TopBuyers';
+import OpportunitiesByStage from '../../components/OpportunitiesByStage';
+import StaleOpportunities from '../../components/StaleOpportunities';
+import RightPanel from '../../components/RightPanel';
 import { 
   List, Plus, Clock, Calendar as CalendarIcon, DollarSign 
 } from 'lucide-react';
 
-const Dashboard: React.FC = () => {
+const BuyerDashboard: React.FC = () => {
   return (
     <div className="flex overflow-hidden">
       <div className="flex-1 overflow-y-auto p-5 bg-gray-100">
@@ -112,4 +112,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default BuyerDashboard;

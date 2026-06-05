@@ -1,9 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
-import Dashboard from './components/Dashboard';
+import BuyerDashboard from './pages/buyer/BuyerDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
 
 // Buyer pages
-import BuyerDashboard from './pages/buyer/Dashboard';
+import Dashboard from './pages/Dashboard';
 import BuyerPipeline from './pages/buyer/Pipeline';
 import BuyerOpportunities from './pages/buyer/Opportunities';
 import BuyerConversations from './pages/buyer/Conversations';
@@ -27,36 +30,108 @@ import AppraisalAppraisals from './pages/appraisal/Appraisals';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
           
-          {/* Buyer Routes */}
-          <Route path="buyer" element={<BuyerDashboard />} />
-          <Route path="buyer/pipeline" element={<BuyerPipeline />} />
-          <Route path="buyer/opportunities" element={<BuyerOpportunities />} />
-          <Route path="buyer/conversations" element={<BuyerConversations />} />
-          <Route path="buyer/tasks" element={<BuyerTasks />} />
-          <Route path="buyer/appointments" element={<BuyerAppointments />} />
-          <Route path="buyer/vehicles" element={<BuyerVehicles />} />
-          <Route path="buyer/sellers" element={<BuyerSellers />} />
-          
-          {/* Manager Routes */}
-          <Route path="manager" element={<ManagerDashboard />} />
-          <Route path="manager/reports" element={<ManagerReports />} />
-          <Route path="manager/team" element={<ManagerTeam />} />
-          <Route path="manager/templates" element={<ManagerTemplates />} />
-          <Route path="manager/settings" element={<ManagerSettings />} />
-          <Route path="manager/integrations" element={<ManagerIntegrations />} />
-          <Route path="manager/billing" element={<ManagerBilling />} />
-          
-          {/* Appraisal Routes */}
-          <Route path="appraisal" element={<AppraisalDashboard />} />
-          <Route path="appraisal/appraisals" element={<AppraisalAppraisals />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            
+            {/* Buyer Routes - Protected for buyer role */}
+            <Route path="buyer" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/pipeline" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerPipeline />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/opportunities" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerOpportunities />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/conversations" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerConversations />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/tasks" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerTasks />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/appointments" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerAppointments />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/vehicles" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerVehicles />
+              </ProtectedRoute>
+            } />
+            <Route path="buyer/sellers" element={
+              <ProtectedRoute allowedRoles={['buyer']}>
+                <BuyerSellers />
+              </ProtectedRoute>
+            } />
+            
+            {/* Manager Routes - Protected for manager role */}
+            <Route path="manager" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="manager/reports" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerReports />
+              </ProtectedRoute>
+            } />
+            <Route path="manager/team" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerTeam />
+              </ProtectedRoute>
+            } />
+            <Route path="manager/templates" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerTemplates />
+              </ProtectedRoute>
+            } />
+            <Route path="manager/settings" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerSettings />
+              </ProtectedRoute>
+            } />
+            <Route path="manager/integrations" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerIntegrations />
+              </ProtectedRoute>
+            } />
+            <Route path="manager/billing" element={
+              <ProtectedRoute allowedRoles={['manager']}>
+                <ManagerBilling />
+              </ProtectedRoute>
+            } />
+            
+            {/* Appraisal Routes - Protected for appraisal role */}
+            <Route path="appraisal" element={
+              <ProtectedRoute allowedRoles={['appraisal']}>
+                <AppraisalDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="appraisal/appraisals" element={
+              <ProtectedRoute allowedRoles={['appraisal']}>
+                <AppraisalAppraisals />
+              </ProtectedRoute>
+            } />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
