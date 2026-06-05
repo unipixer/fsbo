@@ -29,7 +29,7 @@ const ManagerSidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
             <Truck size={18} color="#fff" strokeWidth={2.2} />
           </div>
           <div>
-            <div className="text-white font-bold text-sm leading-tight">SourcePilot</div>
+            <div className="text-white font-bold text-sm leading-tight">FSBO Buying Assistant</div>
             <div className="text-gray-400 text-[10.5px]">Vehicle Sourcing Dashboard</div>
           </div>
         </div>

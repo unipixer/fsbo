@@ -307,7 +307,6 @@ export default function ManagerDashboard() {
 
       {/* Header */}
       <header className="flex items-center gap-3 px-6 py-3.5 bg-white border-b border-gray-100 flex-shrink-0">
-        <h1 className="text-lg font-bold text-gray-900 mr-2">Manager Dashboard</h1>
         <div className="flex-1 max-w-md relative">
           <span className="absolute left-3 top-1/2 -translate-y-1/2"><IconSearchHeader/></span>
           <input type="text" placeholder="Search opportunities, sellers, VIN, or buyers..."
@@ -331,14 +330,7 @@ export default function ManagerDashboard() {
           </button>
           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
         </div>
-        <div className="flex items-center gap-2 cursor-pointer">
-          <Avatar name="Shanto Rahman" index={0} size={9}/>
-          <div>
-            <p className="text-xs font-semibold text-gray-900 leading-tight">Shanto Rahman</p>
-            <p className="text-xs text-gray-400">Manager</p>
-          </div>
-          <span className="text-gray-400 text-xs">▾</span>
-        </div>
+        
       </header>
 
       {/* Scrollable Body */}
