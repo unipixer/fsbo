@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import BuyerLayout from './components/BuyerLayout';
@@ -56,9 +56,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-          </Route>
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
           {/* Buyer Routes - Protected for buyer role with BuyerLayout */}
           <Route path="/buyer" element={
