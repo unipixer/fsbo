@@ -65,7 +65,7 @@ const AppraisalDashboard: React.FC = () => {
       </div>
 
       {/* Quick Access Menu */}
-      <motion.div 
+      {/* <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
@@ -95,7 +95,7 @@ const AppraisalDashboard: React.FC = () => {
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </motion.div> */}
       <AnimatePresence>
         {showToast && (
           <motion.div
