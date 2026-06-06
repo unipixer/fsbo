@@ -743,7 +743,14 @@ export default function ManagerDashboard() {
               </div>
               <div className="space-y-3">
                 {recentActivity.map((item,i)=>(
-                  <div key={i} className="flex items-start gap-3">
+                  <motion.div 
+                    key={i} 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.05 }}
+                    whileHover={{ scale: 1.02, backgroundColor: '#f9fafb' }}
+                    className="flex items-start gap-3 rounded-lg p-2 cursor-pointer"
+                  >
                     <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{background:`${item.color}18`}}>
                       <item.Icon c={item.color}/>
@@ -756,7 +763,7 @@ export default function ManagerDashboard() {
                       <p className="text-xs text-gray-400 truncate">{item.detail}</p>
                     </div>
                     <span className="text-xs text-gray-400 flex-shrink-0">{item.time}</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
@@ -781,21 +788,44 @@ export default function ManagerDashboard() {
                 </motion.button>
               </div>
               <DonutChart/>
-              <div className="mt-5 pt-4 border-t border-gray-100">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="mt-5 pt-4 border-t border-gray-100"
+              >
                 <h3 className="font-bold text-gray-900 text-sm mb-2">Follow-ups Due Today</h3>
                 <p className="text-3xl font-bold text-gray-900 mb-3">14</p>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.45 }}
+                    whileHover={{ x: 5 }}
+                    className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"
+                  >
                     <IconFollowUp c="#6c63ff"/><span>7 follow-ups</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ x: 5 }}
+                    className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"
+                  >
                     <IconSnoozed c="#f59e0b"/><span>5 snoozed (reopened)</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
+                  </motion.div>
+                  <motion.div 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.55 }}
+                    whileHover={{ x: 5 }}
+                    className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer"
+                  >
                     <IconNeedsInfo c="#8b5cf6"/><span>2 needs info responses</span>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
 
             {/* Alerts */}
@@ -826,12 +856,20 @@ export default function ManagerDashboard() {
                   { Icon:IconAlertBlue, label:"2 appraisal requests need attention",    color:"#6c63ff", bg:"#f3f0ff" },
                   { Icon:IconAlertRed,  label:"5 follow-ups are overdue",               color:"#ef4444", bg:"#fef2f2" },
                 ].map((alert,i)=>(
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl border"
-                    style={{background:alert.bg, borderColor:`${alert.color}30`}}>
+                  <motion.div 
+                    key={i} 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.45 + i * 0.05 }}
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center gap-3 p-3 rounded-xl border cursor-pointer"
+                    style={{background:alert.bg, borderColor:`${alert.color}30`}}
+                  >
                     <alert.Icon c={alert.color}/>
                     <span className="text-xs text-gray-700 flex-1">{alert.label}</span>
                     <span className="text-gray-400 text-xs">▾</span>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>

@@ -3,6 +3,7 @@ import {
   Download, Calendar, TrendingUp, DollarSign, 
   Car, Users, BarChart3, PieChart
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Reports: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('30');
@@ -26,7 +27,12 @@ const Reports: React.FC = () => {
   return (
     <div className="p-5 bg-gray-100 min-h-screen">
       {/* Page Header */}
-      <div className="flex items-start justify-between mb-5">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-start justify-between mb-5"
+      >
         <div>
           <h1 className="text-[22px] font-bold text-gray-900 leading-tight">Reports</h1>
           <p className="text-gray-500 text-xs mt-0.5">
@@ -47,15 +53,24 @@ const Reports: React.FC = () => {
               <option value="365">Last Year</option>
             </select>
           </div>
-          <button className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50">
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50"
+          >
             <Download size={14} color="#6b7280" />
             <span className="text-xs text-gray-700 font-medium">Export</span>
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Report Type Tabs */}
-      <div className="flex items-center gap-1 mb-4 bg-white rounded-lg border border-gray-200 p-1">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
+        className="flex items-center gap-1 mb-4 bg-white rounded-lg border border-gray-200 p-1"
+      >
         {reports.map((report) => {
           const Icon = report.icon;
           return (
@@ -73,10 +88,15 @@ const Reports: React.FC = () => {
             </button>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-3 mb-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.4 }}
+        className="grid grid-cols-4 gap-3 mb-4"
+      >
         <div className="bg-white rounded-lg border border-gray-200 p-3">
           <div className="flex items-center justify-between mb-2">
             <div className="text-[10.5px] text-gray-500">Total Revenue</div>
@@ -121,10 +141,15 @@ const Reports: React.FC = () => {
             +3% from last period
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        className="grid grid-cols-2 gap-4 mb-4"
+      >
         {/* Revenue Chart Placeholder */}
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-4">Revenue Trend</h3>
@@ -146,10 +171,15 @@ const Reports: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Detailed Table */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.25, duration: 0.4 }}
+        className="bg-white rounded-lg border border-gray-200 overflow-hidden"
+      >
         <div className="p-4 border-b border-gray-200">
           <h3 className="text-sm font-semibold text-gray-900">Recent Transactions</h3>
         </div>
@@ -173,7 +203,7 @@ const Reports: React.FC = () => {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

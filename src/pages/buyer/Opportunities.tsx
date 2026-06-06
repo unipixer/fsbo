@@ -5,6 +5,7 @@ import {
   MessageSquare, Phone, ArrowUpDown, XCircle,
   Clock, AlertCircle, CheckSquare, Square
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Opportunity {
   id: string;
@@ -329,7 +330,12 @@ const Opportunities: React.FC = () => {
       {/* Main Opportunities View */}
       <div className="flex-1 overflow-y-auto p-5 bg-gray-100">
         {/* Page Header */}
-        <div className="flex items-start justify-between mb-5">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-start justify-between mb-5"
+        >
           <div>
             <h1 className="text-[22px] font-bold text-gray-900 leading-tight">Opportunities</h1>
             <p className="text-gray-500 text-xs mt-0.5">
@@ -337,15 +343,24 @@ const Opportunities: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-2.5">
-            <button className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50"
+            >
               <Plus size={14} color="#6b7280" />
               <span className="text-xs text-gray-700 font-medium">Add Opportunity</span>
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Stats Bar */}
-        <div className="bg-white rounded-lg border border-gray-200 p-3 mb-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="bg-white rounded-lg border border-gray-200 p-3 mb-4"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <div>
@@ -377,10 +392,15 @@ const Opportunities: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg border border-gray-200 p-3 mb-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.4 }}
+          className="bg-white rounded-lg border border-gray-200 p-3 mb-4"
+        >
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex-1 relative min-w-[200px]">
               <Search size={14} color="#9ca3af" className="absolute left-2.5 top-1/2 -translate-y-1/2" />
@@ -445,10 +465,15 @@ const Opportunities: React.FC = () => {
               </select>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Opportunities Table */}
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          className="bg-white rounded-lg border border-gray-200 overflow-hidden"
+        >
           {/* Table Header */}
           <div className="grid grid-cols-12 gap-2 px-4 py-3 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-700">
             <div className="col-span-0.5 flex items-center">
@@ -482,10 +507,14 @@ const Opportunities: React.FC = () => {
 
           {/* Table Body */}
           <div className="divide-y divide-gray-100">
-            {sortedOpportunities.map((opp) => (
-              <div
+            {sortedOpportunities.map((opp, index) => (
+              <motion.div
                 key={opp.id}
-                className="grid grid-cols-12 gap-2 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + index * 0.03 }}
+                whileHover={{ scale: 1.01, backgroundColor: '#f9fafb' }}
+                className="grid grid-cols-12 gap-2 px-4 py-3 cursor-pointer transition-colors"
                 onClick={() => setSelectedOpportunity(opp)}
               >
                 <div className="col-span-0.5 flex items-center" onClick={(e) => { e.stopPropagation(); toggleSelect(opp.id); }}>
@@ -539,7 +568,7 @@ const Opportunities: React.FC = () => {
                     </div>
                   )}
                 </div>
-              </div>
+              </motion.div>
             ))}
 
             {sortedOpportunities.length === 0 && (
@@ -550,10 +579,15 @@ const Opportunities: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between mt-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.4 }}
+          className="flex items-center justify-between mt-4"
+        >
           <div className="text-xs text-gray-500">
             Showing {sortedOpportunities.length} of {opportunities.length} opportunities
           </div>
@@ -565,12 +599,19 @@ const Opportunities: React.FC = () => {
               Next
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Opportunity Detail Panel */}
-      {selectedOpportunity && (
-        <div className="w-96 bg-white border-l border-gray-200 overflow-y-auto">
+      <AnimatePresence>
+        {selectedOpportunity && (
+          <motion.div
+            initial={{ x: 384 }}
+            animate={{ x: 0 }}
+            exit={{ x: 384 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="w-96 bg-white border-l border-gray-200 overflow-y-auto"
+          >
           <div className="p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
@@ -656,26 +697,39 @@ const Opportunities: React.FC = () => {
 
             {/* Actions */}
             <div className="space-y-2">
-              <button className="w-full bg-blue-600 text-white text-xs font-medium py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-1.5">
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-blue-600 text-white text-xs font-medium py-2 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-1.5"
+              >
                 <MessageSquare size={14} />
                 Send Message
-              </button>
-              <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5"
+              >
                 <Phone size={14} />
                 Call Seller
-              </button>
+              </motion.button>
               <Link to="/appointments" className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
                 <Calendar size={14} />
                 Schedule Appointment
               </Link>
-              <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5">
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-medium py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1.5"
+              >
                 <MoreVertical size={14} />
                 More Options
-              </button>
+              </motion.button>
             </div>
           </div>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

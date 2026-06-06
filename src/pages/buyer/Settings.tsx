@@ -1,23 +1,35 @@
 import React from 'react';
 import { Settings, User, Bell, Shield, Palette } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const BuyerSettings: React.FC = () => {
   return (
     <div className="flex-1 overflow-y-auto p-5 bg-gray-100">
       {/* Page Header */}
-      <div className="flex items-start justify-between mb-5">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-start justify-between mb-5"
+      >
         <div>
           <h1 className="text-[22px] font-bold text-gray-900 leading-tight">Settings</h1>
           <p className="text-gray-500 text-xs mt-0.5">
             Manage your account preferences
           </p>
         </div>
-      </div>
+      </motion.div>
 
       {/* Settings Sections */}
       <div className="space-y-4">
         {/* Profile Settings */}
-        <div className="bg-white rounded-lg border border-gray-200">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          whileHover={{ scale: 1.01 }}
+          className="bg-white rounded-lg border border-gray-200"
+        >
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
               <User size={18} color="#2563eb" />
@@ -42,10 +54,16 @@ const BuyerSettings: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Notification Settings */}
-        <div className="bg-white rounded-lg border border-gray-200">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.4 }}
+          whileHover={{ scale: 1.01 }}
+          className="bg-white rounded-lg border border-gray-200"
+        >
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
               <Bell size={18} color="#2563eb" />
@@ -66,10 +84,16 @@ const BuyerSettings: React.FC = () => {
               <input type="checkbox" className="w-4 h-4 text-blue-600" defaultChecked />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Security Settings */}
-        <div className="bg-white rounded-lg border border-gray-200">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          whileHover={{ scale: 1.01 }}
+          className="bg-white rounded-lg border border-gray-200"
+        >
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
               <Shield size={18} color="#2563eb" />
@@ -77,14 +101,24 @@ const BuyerSettings: React.FC = () => {
             </div>
           </div>
           <div className="p-4">
-            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+            >
               Change Password
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Appearance Settings */}
-        <div className="bg-white rounded-lg border border-gray-200">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.4 }}
+          whileHover={{ scale: 1.01 }}
+          className="bg-white rounded-lg border border-gray-200"
+        >
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center gap-2">
               <Palette size={18} color="#2563eb" />
@@ -101,7 +135,7 @@ const BuyerSettings: React.FC = () => {
               </select>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

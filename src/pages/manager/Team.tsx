@@ -3,6 +3,7 @@ import {
   Plus, MoreVertical, XCircle, Mail, Phone, User, 
   Shield, Settings, Calendar, DollarSign
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TeamMember {
   id: string;
@@ -131,7 +132,12 @@ const Team: React.FC = () => {
       {/* Main Team View */}
       <div className="flex-1 overflow-y-auto p-5 bg-gray-100">
         {/* Page Header */}
-        <div className="flex items-start justify-between mb-5">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex items-start justify-between mb-5"
+        >
           <div>
             <h1 className="text-[22px] font-bold text-gray-900 leading-tight">Team</h1>
             <p className="text-gray-500 text-xs mt-0.5">
@@ -139,15 +145,24 @@ const Team: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center gap-2.5">
-            <button className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white border border-gray-200 rounded-lg px-3 py-1.5 flex items-center gap-1.5 cursor-pointer hover:bg-gray-50"
+            >
               <Plus size={14} color="#6b7280" />
               <span className="text-xs text-gray-700 font-medium">Add Member</span>
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-4 gap-3 mb-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="grid grid-cols-4 gap-3 mb-4"
+        >
           <div className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
             <div className="flex items-start justify-between">
               <div className="flex-1">
@@ -196,10 +211,15 @@ const Team: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg border border-gray-200 p-3 mb-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.4 }}
+          className="bg-white rounded-lg border border-gray-200 p-3 mb-4"
+        >
           <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-1.5 border border-gray-200 rounded-lg px-2.5 py-1">
               <Shield size={13} color="#6b7280" />
@@ -228,10 +248,15 @@ const Team: React.FC = () => {
               </select>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Team Members List */}
-        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          className="bg-white rounded-lg border border-gray-200 overflow-hidden"
+        >
           <div className="divide-y divide-gray-100">
             {filteredMembers.map((member) => (
               <div
@@ -299,12 +324,19 @@ const Team: React.FC = () => {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Member Detail Panel */}
-      {selectedMember && (
-        <div className="w-96 bg-white border-l border-gray-200 overflow-y-auto">
+      <AnimatePresence>
+        {selectedMember && (
+          <motion.div
+            initial={{ x: 384 }}
+            animate={{ x: 0 }}
+            exit={{ x: 384 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="w-96 bg-white border-l border-gray-200 overflow-y-auto"
+          >
           <div className="p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
@@ -398,8 +430,9 @@ const Team: React.FC = () => {
               </button>
             </div>
           </div>
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

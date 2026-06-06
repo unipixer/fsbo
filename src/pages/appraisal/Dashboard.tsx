@@ -65,26 +65,37 @@ const AppraisalDashboard: React.FC = () => {
       </div>
 
       {/* Quick Access Menu */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="bg-white rounded-lg border border-gray-200 p-6"
+      >
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Access</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {menuItems.map((item, index) => (
-            <Link
+            <motion.div
               key={index}
-              to={item.path}
-              className="flex items-start gap-3 p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all cursor-pointer"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.25 + index * 0.05 }}
             >
-              <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                <item.icon size={20} className="text-blue-600" />
-              </div>
-              <div>
-                <div className="text-sm font-semibold text-gray-900">{item.label}</div>
-                <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
-              </div>
-            </Link>
+              <Link
+                to={item.path}
+                className="flex items-start gap-3 p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all cursor-pointer block"
+              >
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <item.icon size={20} className="text-blue-600" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-gray-900">{item.label}</div>
+                  <div className="text-xs text-gray-500 mt-0.5">{item.description}</div>
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
       <AnimatePresence>
         {showToast && (
           <motion.div
