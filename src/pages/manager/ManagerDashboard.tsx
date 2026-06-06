@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
 const avatarColors = ["#6c63ff", "#f59e0b", "#10b981", "#ef4444", "#3b82f6"];
 
 function Avatar({ name, size = 8, index = 0 }: { name: string; size?: number; index?: number }) {
@@ -286,6 +289,31 @@ function DonutChart() {
 // ── Main Dashboard ────────────────────────────────────────────────────────────
 
 export default function ManagerDashboard() {
+  const [showCalendarDropdown, setShowCalendarDropdown] = useState(false);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
+  const [showGroupByDropdown, setShowGroupByDropdown] = useState(false);
+  const [showPerformerDropdown, setShowPerformerDropdown] = useState(false);
+  const [selectedDateRange, setSelectedDateRange] = useState('This Week: May 26 – Jun 1, 2025');
+  const [selectedGroupBy, setSelectedGroupBy] = useState('Buyer');
+  const [selectedPerformerRange, setSelectedPerformerRange] = useState('This Week');
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const handleRefresh = () => {
+    setToastMessage('Dashboard refreshed');
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 2000);
+  };
+
+  const handleViewFullPipeline = () => {
+    console.log('Navigate to full pipeline');
+  };
+
+  const handleViewAll = (section: string) => {
+    console.log(`View all ${section}`);
+  };
+
   const colHeaders = [
     { label:"Claimed",        sub:"32", color:"#6c63ff" },
     { label:"Contacted",      sub:"18", color:"#3b82f6" },
@@ -298,27 +326,126 @@ export default function ManagerDashboard() {
   ];
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <>
+      <div className="flex-1 flex flex-col overflow-hidden">
 
-      {/* Header */}
-      <header className="flex items-center gap-3 px-6 py-3.5  border-b border-gray-100 flex-shrink-0">
+        {/* Header */}
+        <header className="flex items-center gap-3 px-6 py-3.5  border-b border-gray-100 flex-shrink-0">
         
-        <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors ml-auto">
-          <IconCalHeader c="#6b7280"/>
-          <span className="font-medium">This Week: May 26 – Jun 1, 2025</span>
-          <span className="text-gray-400">▾</span>
-        </div>
-        <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
-          <IconRefresh/>
-        </button>
-        <button className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors">
-          <IconFilter/><span className="font-medium">Filters</span><span className="text-gray-400">▾</span>
-        </button>
         <div className="relative">
-          <button className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
+          <div 
+            className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 cursor-pointer hover:bg-gray-100 transition-colors ml-auto"
+            onClick={() => setShowCalendarDropdown(!showCalendarDropdown)}
+          >
+            <IconCalHeader c="#6b7280"/>
+            <span className="font-medium">{selectedDateRange}</span>
+            <span className="text-gray-400">▾</span>
+          </div>
+          <AnimatePresence>
+            {showCalendarDropdown && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="absolute right-0 top-10 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+              >
+                <div className="p-1">
+                  {['Today', 'Yesterday', 'Last 7 days', 'Last 30 days', 'This month', 'Custom range'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setSelectedDateRange(option);
+                        setShowCalendarDropdown(false);
+                      }}
+                      className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <motion.button 
+          onClick={handleRefresh}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors"
+        >
+          <IconRefresh/>
+        </motion.button>
+        <div className="relative">
+          <div 
+            className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+            onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+          >
+            <IconFilter/><span className="font-medium">Filters</span><span className="text-gray-400">▾</span>
+          </div>
+          <AnimatePresence>
+            {showFilterDropdown && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="absolute right-0 top-10 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+              >
+                <div className="p-1">
+                  {['All Buyers', 'Active Only', 'Inactive', 'Top Performers'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setShowFilterDropdown(false);
+                      }}
+                      className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <div className="relative">
+          <motion.button 
+            onClick={() => setShowNotificationDropdown(!showNotificationDropdown)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors"
+          >
             <IconBell/>
-          </button>
+          </motion.button>
           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">3</span>
+          <AnimatePresence>
+            {showNotificationDropdown && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="absolute right-0 top-10 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+              >
+                <div className="p-3 border-b border-gray-200">
+                  <span className="text-sm font-semibold text-gray-900">Notifications</span>
+                </div>
+                <div className="p-2 max-h-64 overflow-y-auto">
+                  {[
+                    { message: 'New claim by Alex Morgan', time: '2m ago' },
+                    { message: 'Appraisal completed', time: '15m ago' },
+                    { message: 'Follow-up due', time: '1h ago' },
+                  ].map((notif, i) => (
+                    <div key={i} className="p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
+                      <div className="text-xs text-gray-900">{notif.message}</div>
+                      <div className="text-[10px] text-gray-500">{notif.time}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         
       </header>
@@ -328,31 +455,115 @@ export default function ManagerDashboard() {
 
           {/* Stat Cards */}
           <div className="flex gap-4 mb-6">
-            <StatCard iconEl={<IconDocument   c="#6c63ff"/>} iconBg="#ede9fe" label="Listings Reviewed"    value="842" change="18%"/>
-            <StatCard iconEl={<IconClipboard  c="#06b6d4"/>} iconBg="#e0f7fa" label="Claims Created"       value="128" change="15%"/>
-            <StatCard iconEl={<IconCheckCircle c="#10b981"/>} iconBg="#d1fae5" label="First Messages"       value="96"  change="20%"/>
-            <StatCard iconEl={<IconMessageCircle c="#f59e0b"/>} iconBg="#fef3c7" label="Replies Received"   value="41"  change="17%"/>
-            <StatCard iconEl={<IconTag        c="#8b5cf6"/>} iconBg="#ede9fe" label="Appraisals Requested"  value="28"  change="12%"/>
-            <StatCard iconEl={<IconShoppingBag c="#10b981"/>} iconBg="#d1fae5" label="Purchases"            value="7"   change="40%"/>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => console.log('Listings Reviewed clicked')}
+              className="cursor-pointer"
+            >
+              <StatCard iconEl={<IconDocument   c="#6c63ff"/>} iconBg="#ede9fe" label="Listings Reviewed"    value="842" change="18%"/>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => console.log('Claims Created clicked')}
+              className="cursor-pointer"
+            >
+              <StatCard iconEl={<IconClipboard  c="#06b6d4"/>} iconBg="#e0f7fa" label="Claims Created"       value="128" change="15%"/>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => console.log('First Messages clicked')}
+              className="cursor-pointer"
+            >
+              <StatCard iconEl={<IconCheckCircle c="#10b981"/>} iconBg="#d1fae5" label="First Messages"       value="96"  change="20%"/>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => console.log('Replies Received clicked')}
+              className="cursor-pointer"
+            >
+              <StatCard iconEl={<IconMessageCircle c="#f59e0b"/>} iconBg="#fef3c7" label="Replies Received"   value="41"  change="17%"/>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => console.log('Appraisals Requested clicked')}
+              className="cursor-pointer"
+            >
+              <StatCard iconEl={<IconTag        c="#8b5cf6"/>} iconBg="#ede9fe" label="Appraisals Requested"  value="28"  change="12%"/>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => console.log('Purchases clicked')}
+              className="cursor-pointer"
+            >
+              <StatCard iconEl={<IconShoppingBag c="#10b981"/>} iconBg="#d1fae5" label="Purchases"            value="7"   change="40%"/>
+            </motion.div>
           </div>
 
           {/* Middle Row */}
           <div className="flex gap-5 mb-5">
 
             {/* Team Pipeline Board */}
-            <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            >
               <div className="flex items-center justify-between px-5 pt-5 pb-3">
                 <div className="flex items-center gap-2">
                   <h2 className="font-bold text-gray-900 text-sm">Team Pipeline Board</h2>
                   <span className="text-gray-400"><IconAlertBlue c="#9ca3af"/></span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-600 cursor-pointer">
-                    <span>Group by: Buyer</span><span>▾</span>
+                  <div className="relative">
+                    <div 
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs text-gray-600 cursor-pointer"
+                      onClick={() => setShowGroupByDropdown(!showGroupByDropdown)}
+                    >
+                      <span>Group by: {selectedGroupBy}</span><span>▾</span>
+                    </div>
+                    <AnimatePresence>
+                      {showGroupByDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 top-10 w-40 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+                        >
+                          <div className="p-1">
+                            {['Buyer', 'Stage', 'Source'].map((option) => (
+                              <button
+                                key={option}
+                                onClick={() => {
+                                  setSelectedGroupBy(option);
+                                  setShowGroupByDropdown(false);
+                                }}
+                                className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                              >
+                                {option}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                  <button className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white" style={{background:"#6c63ff"}}>
+                  <motion.button
+                    onClick={handleViewFullPipeline}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition"
+                    style={{background:"#6c63ff"}}
+                  >
                     View Full Pipeline
-                  </button>
+                  </motion.button>
                 </div>
               </div>
 
@@ -373,7 +584,13 @@ export default function ManagerDashboard() {
                     {buyers.map((b,i)=>{
                       const vals=[b.claimed,b.contacted,b.replied,b.appReq,b.offerSent,b.apptSet,b.purchased,b.lost];
                       return (
-                        <tr key={i} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                        <motion.tr 
+                          key={i} 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.25 + i * 0.05 }}
+                          className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
+                        >
                           <td className="px-5 py-3">
                             <div className="flex items-center gap-2">
                               <Avatar name={b.name} index={i} size={7}/>
@@ -391,7 +608,7 @@ export default function ManagerDashboard() {
                               </span>
                             </td>
                           ))}
-                        </tr>
+                        </motion.tr>
                       );
                     })}
                     <tr className="bg-gray-50/50">
@@ -405,16 +622,29 @@ export default function ManagerDashboard() {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </motion.div>
 
             {/* Stuck Work + Top Performers */}
-            <div className="w-72 flex-shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.25 }}
+              className="w-72 flex-shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 p-5"
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <h2 className="font-bold text-gray-900 text-sm">Stuck Work</h2>
                   <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">23</span>
                 </div>
-                <button className="text-xs font-semibold" style={{color:"#6c63ff"}}>View all</button>
+                <motion.button
+                  onClick={() => handleViewAll('stuck work')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-xs font-semibold transition"
+                  style={{color:"#6c63ff"}}
+                >
+                  View all
+                </motion.button>
               </div>
               <div className="space-y-3">
                 {stuckWork.map((item,i)=>(
@@ -432,9 +662,40 @@ export default function ManagerDashboard() {
               <div className="mt-5 pt-5 border-t border-gray-100">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="font-bold text-gray-900 text-sm">Top Performers</h2>
-                  <div className="flex items-center gap-1 px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer">
-                    <span className="text-xs text-gray-600">This Week</span>
-                    <span className="text-gray-400 text-xs">▾</span>
+                  <div className="relative">
+                    <div 
+                      className="flex items-center gap-1 px-2 py-1 bg-gray-50 border border-gray-200 rounded-lg cursor-pointer"
+                      onClick={() => setShowPerformerDropdown(!showPerformerDropdown)}
+                    >
+                      <span className="text-xs text-gray-600">{selectedPerformerRange}</span>
+                      <span className="text-gray-400 text-xs">▾</span>
+                    </div>
+                    <AnimatePresence>
+                      {showPerformerDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute right-0 top-10 w-40 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+                        >
+                          <div className="p-1">
+                            {['Today', 'This Week', 'This Month', 'All Time'].map((option) => (
+                              <button
+                                key={option}
+                                onClick={() => {
+                                  setSelectedPerformerRange(option);
+                                  setShowPerformerDropdown(false);
+                                }}
+                                className="w-full text-left px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                              >
+                                {option}
+                              </button>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -455,17 +716,30 @@ export default function ManagerDashboard() {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Bottom Row */}
           <div className="flex gap-5">
 
             {/* Recent Activity */}
-            <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5"
+            >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-gray-900 text-sm">Recent Activity</h2>
-                <button className="text-xs font-semibold" style={{color:"#6c63ff"}}>View all</button>
+                <motion.button
+                  onClick={() => handleViewAll('recent activity')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-xs font-semibold transition"
+                  style={{color:"#6c63ff"}}
+                >
+                  View all
+                </motion.button>
               </div>
               <div className="space-y-3">
                 {recentActivity.map((item,i)=>(
@@ -485,13 +759,26 @@ export default function ManagerDashboard() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Appraisal Queue */}
-            <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5"
+            >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-gray-900 text-sm">Appraisal Queue</h2>
-                <button className="text-xs font-semibold" style={{color:"#6c63ff"}}>View all</button>
+                <motion.button
+                  onClick={() => handleViewAll('appraisal queue')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-xs font-semibold transition"
+                  style={{color:"#6c63ff"}}
+                >
+                  View all
+                </motion.button>
               </div>
               <DonutChart/>
               <div className="mt-5 pt-4 border-t border-gray-100">
@@ -509,16 +796,29 @@ export default function ManagerDashboard() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Alerts */}
-            <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100 p-5"
+            >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <h2 className="font-bold text-gray-900 text-sm">Alerts</h2>
                   <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">3</span>
                 </div>
-                <button className="text-xs font-semibold" style={{color:"#6c63ff"}}>View all alerts</button>
+                <motion.button
+                  onClick={() => handleViewAll('alerts')}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-xs font-semibold transition"
+                  style={{color:"#6c63ff"}}
+                >
+                  View all alerts
+                </motion.button>
               </div>
               <div className="space-y-2">
                 {[
@@ -534,10 +834,23 @@ export default function ManagerDashboard() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
           </div>
         </div>
       </div>
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-4 right-4 bg-gray-900 text-white px-4 py-2 rounded-lg text-xs z-50"
+          >
+            {toastMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

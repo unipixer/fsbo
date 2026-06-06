@@ -6,6 +6,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { motion } from 'framer-motion';
 
 ChartJS.register(
   ArcElement,
@@ -68,32 +69,48 @@ const OpportunitiesByStage: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white rounded-lg border border-gray-200 p-0"
+    >
       <div className="px-4 py-3.5 pb-2.5 text-sm font-semibold text-gray-900">
         Opportunities by Stage
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       <div className="px-4 py-3.5 flex items-center gap-3.5">
-        <div className="relative w-[110px] h-[110px] flex-shrink-0">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="relative w-[110px] h-[110px] flex-shrink-0"
+        >
           <Doughnut data={chartData} options={chartOptions} />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <div className="text-xl font-bold text-gray-900">234</div>
             <div className="text-xs text-gray-500">Total</div>
           </div>
-        </div>
+        </motion.div>
         <div className="flex-1">
           {stages.map((stage, index) => (
-            <div key={index} className="flex justify-between mb-1.25">
+            <motion.div 
+              key={index} 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15 + index * 0.05 }}
+              className="flex justify-between mb-1.25"
+            >
               <div className="flex items-center gap-1.25">
                 <div className="w-1.75 h-1.75 rounded-full" style={{ background: stage.color }} />
                 <span className="text-[11.5px] text-gray-700">{stage.name}</span>
               </div>
               <span className="text-[11.5px] text-gray-700">{stage.count} ({stage.percentage})</span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

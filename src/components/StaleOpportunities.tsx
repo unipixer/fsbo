@@ -11,19 +11,35 @@ const StaleOpportunities: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white rounded-lg border border-gray-200 p-0"
+    >
       <div className="flex items-center gap-3 px-4 py-3.5 pb-3">
-        <div className="flex items-center gap-2">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="flex items-center gap-2"
+        >
           <AlertTriangle size={18} color="#f59e0b" strokeWidth={2.2} />
           <span className="text-gray-900 text-xs font-semibold">
             <span className="text-red-500">12</span> opportunities haven't been updated in over 7 days.
           </span>
-        </div>
+        </motion.div>
         <div className="flex-1" />
         {/* Stale Cars */}
         <div className="flex gap-3.5 flex-3">
           {staleOpportunities.map((opp, index) => (
-            <div key={index} className="flex items-center gap-2.5 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 flex-1">
+            <motion.div 
+              key={index} 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15 + index * 0.1 }}
+              className="flex items-center gap-2.5 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 flex-1"
+            >
               <motion.div 
                 className="w-20 h-13 rounded-lg overflow-hidden"
                 whileHover={{ scale: 1.05, rotate: 2 }}
@@ -38,17 +54,27 @@ const StaleOpportunities: React.FC = () => {
                   Last activity: {opp.daysAgo} days ago
                 </div>
               </div>
-              <button className="ml-auto bg-blue-600 text-white border-none rounded-md px-3 py-1 text-xs font-medium cursor-pointer">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="ml-auto bg-blue-600 text-white border-none rounded-md px-3 py-1 text-xs font-medium cursor-pointer"
+              >
                 Reassign
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           ))}
         </div>
-        <Link to="/opportunities" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline flex-shrink-0 whitespace-nowrap flex items-center gap-0.75">
-          View all stale <ArrowRight size={12} color="#2563eb" strokeWidth={2.5} />
-        </Link>
+        <motion.div
+          initial={{ opacity: 0, x: 10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <Link to="/opportunities" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline flex-shrink-0 whitespace-nowrap flex items-center gap-0.75">
+            View all stale <ArrowRight size={12} color="#2563eb" strokeWidth={2.5} />
+          </Link>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

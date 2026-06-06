@@ -5,6 +5,7 @@ import {
   FileText, Calendar, BarChart3, Settings, 
   LogOut, Truck 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -48,47 +49,39 @@ const BuyerSidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
 
       {/* Nav */}
       <nav className="flex-1 pt-2">
-        <Link to="/buyer" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Home size={16} className="w-4 h-4 flex-shrink-0" />
-          Home
-        </Link>
-        <Link to="/buyer/marketplace-searches" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/marketplace-searches') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Search size={16} className="w-4 h-4 flex-shrink-0" />
-          Marketplace Searches
-        </Link>
-        <Link to="/buyer/opportunities" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/opportunities') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <List size={16} className="w-4 h-4 flex-shrink-0" />
-          My Opportunities
-        </Link>
-        <Link to="/buyer/pipeline" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/pipeline') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <LayoutGrid size={16} className="w-4 h-4 flex-shrink-0" />
-          My Pipeline
-        </Link>
-        <Link to="/buyer/follow-ups" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/follow-ups') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Clock size={16} className="w-4 h-4 flex-shrink-0" />
-          Follow Ups
-        </Link>
-        <Link to="/buyer/templates" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/templates') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <FileText size={16} className="w-4 h-4 flex-shrink-0" />
-          Templates
-        </Link>
-        <Link to="/buyer/appointments" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/appointments') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Calendar size={16} className="w-4 h-4 flex-shrink-0" />
-          Appointments
-        </Link>
-        <Link to="/buyer/performance" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/performance') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <BarChart3 size={16} className="w-4 h-4 flex-shrink-0" />
-          Performance
-        </Link>
-        <Link to="/buyer/settings" className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${isActive('/buyer/settings') ? 'bg-[#2563eb] text-white' : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'}`}>
-          <Settings size={16} className="w-4 h-4 flex-shrink-0" />
-          Settings
-        </Link>
+        {[
+          { to: '/buyer', icon: Home, label: 'Home' },
+          { to: '/buyer/marketplace-searches', icon: Search, label: 'Marketplace Searches' },
+          { to: '/buyer/opportunities', icon: List, label: 'My Opportunities' },
+          { to: '/buyer/pipeline', icon: LayoutGrid, label: 'My Pipeline' },
+          { to: '/buyer/follow-ups', icon: Clock, label: 'Follow Ups' },
+          { to: '/buyer/templates', icon: FileText, label: 'Templates' },
+          { to: '/buyer/appointments', icon: Calendar, label: 'Appointments' },
+          { to: '/buyer/performance', icon: BarChart3, label: 'Performance' },
+          { to: '/buyer/settings', icon: Settings, label: 'Settings' },
+        ].map((item, index) => (
+          <div key={item.to}>
+            <Link 
+              to={item.to} 
+              className={`flex items-center gap-2.5 px-4 py-2 cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-2 ${
+                isActive(item.to) 
+                  ? 'bg-[#2563eb] text-white' 
+                  : 'text-[#9ca3af] hover:bg-white/7 hover:text-white'
+              }`}
+            >
+              <item.icon size={16} className="w-4 h-4 flex-shrink-0" />
+              {item.label}
+            </Link>
+          </div>
+        ))}
       </nav>
 
       {/* Collapse */}
       <div className="border-t border-white/8 px-4 py-3">
-        <div onClick={onToggle} className="flex items-center gap-2.5 px-4 py-2 text-[#9ca3af] cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-0 hover:bg-white/7 hover:text-white">
+        <div 
+          onClick={onToggle} 
+          className="flex items-center gap-2.5 px-4 py-2 text-[#9ca3af] cursor-pointer transition-all duration-150 text-[13px] font-400 rounded-md mx-0 hover:bg-white/7 hover:text-white"
+        >
           <LogOut size={16} className="w-4 h-4 flex-shrink-0" />
           <span className="text-[13px]">Collapse</span>
         </div>

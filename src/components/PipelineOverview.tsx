@@ -12,6 +12,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import { motion } from 'framer-motion';
 
 ChartJS.register(
   CategoryScale,
@@ -103,7 +104,12 @@ const PipelineOverview: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white rounded-lg border border-gray-200 p-0"
+    >
       <div className="flex items-center justify-between px-4 py-3.5 pb-2.5">
         <div className="text-sm font-semibold text-gray-900">Pipeline Overview</div>
         <Link to="/pipeline" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View full pipeline</Link>
@@ -112,40 +118,72 @@ const PipelineOverview: React.FC = () => {
       {/* Stage Headers */}
       <div className="grid grid-cols-6 px-3.5 pt-3 pb-0 gap-0.5">
         {stages.map((stage, index) => (
-          <div key={index} className="text-center flex-1">
+          <motion.div 
+            key={index} 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + index * 0.05 }}
+            className="text-center flex-1"
+          >
             <div className="text-xs text-gray-500 font-medium">{stage.name}</div>
             <div className="text-xl font-bold text-gray-900 my-0.5">{stage.count}</div>
             <div className="h-0.75 rounded-md mt-1" style={{ background: stage.color }} />
-          </div>
+          </motion.div>
         ))}
       </div>
       <div className="grid grid-cols-6 px-3.5 py-1 pb-2 gap-0.5">
         {stages.map((stage, index) => (
-          <div key={index} className="text-center text-[10.5px] text-gray-400">{stage.value}</div>
+          <motion.div 
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.15 + index * 0.05 }}
+            className="text-center text-[10.5px] text-gray-400"
+          >
+            {stage.value}
+          </motion.div>
         ))}
       </div>
       <div className="grid grid-cols-6 px-3.5 pb-2.5 gap-0.5">
         {stages.map((stage, index) => (
-          <div key={index} className="text-center text-xs text-gray-400">{stage.count} vehicles</div>
+          <motion.div 
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 + index * 0.05 }}
+            className="text-center text-xs text-gray-400"
+          >
+            {stage.count} vehicles
+          </motion.div>
         ))}
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       {/* Pipeline Value Chart */}
-      <div className="px-4 py-3 pb-2.5">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="px-4 py-3 pb-2.5"
+      >
         <div className="text-xs font-semibold text-gray-700 mb-2">Pipeline Value</div>
         <div className="flex items-end gap-3.5">
           <div className="flex-1 h-[100px] relative">
             <Line data={chartData} options={chartOptions} />
           </div>
-          <div className="text-right flex-shrink-0">
+          <motion.div 
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-right flex-shrink-0"
+          >
             <div className="text-xs text-gray-500 mb-0.5">Total Pipeline Value</div>
             <div className="text-xl font-bold text-gray-900">$2,479,450</div>
             <div className="text-emerald-500 text-xs font-semibold mt-0.5">↑ 14%</div>
             <div className="text-gray-400 text-[10.5px]">vs last 7 days</div>
-          </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

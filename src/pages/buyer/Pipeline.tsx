@@ -22,6 +22,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SortableOpportunityCardProps {
   opportunity: Opportunity;
@@ -54,11 +55,15 @@ function SortableOpportunityCard({ opportunity, stages, getPriorityBadge, getSou
   };
 
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ scale: 1.02 }}
       className={`bg-white rounded-lg border p-2 cursor-pointer transition-all ${
         isDragging 
           ? 'border-blue-500 shadow-2xl' 
@@ -125,7 +130,7 @@ function SortableOpportunityCard({ opportunity, stages, getPriorityBadge, getSou
           Last activity: {opportunity.lastActivity}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -144,9 +149,12 @@ function DroppableStage({ stage, stageOpportunities, stages, getPriorityBadge, g
   const { setNodeRef, isOver } = useDroppable({ id: stage.id });
 
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
       key={stage.id}
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4, delay: stages.indexOf(stage) * 0.1 }}
       className={`flex-shrink-0 w-60 bg-gray-50 rounded-lg border overflow-hidden transition-all duration-200 ${
         isOver 
           ? 'border-blue-500 bg-blue-100 scale-[1.02] shadow-lg' 
@@ -157,9 +165,14 @@ function DroppableStage({ stage, stageOpportunities, stages, getPriorityBadge, g
       <div className="px-2.5 py-2 border-b border-gray-200 transition-colors" style={{ backgroundColor: stage.bgColor }}>
         <div className="flex items-center justify-between mb-0.5">
           <div className="text-xs font-semibold text-gray-900">{stage.name}</div>
-          <div className="text-[10px] font-medium px-1.5 py-0.5 rounded-full transition-all" style={{ backgroundColor: stage.color, color: 'white' }}>
+          <motion.div 
+            className="text-[10px] font-medium px-1.5 py-0.5 rounded-full transition-all"
+            style={{ backgroundColor: stage.color, color: 'white' }}
+            animate={{ scale: isOver ? 1.1 : 1 }}
+            transition={{ duration: 0.2 }}
+          >
             {getStageCount(stage.id)}
-          </div>
+          </motion.div>
         </div>
         <div className="text-[9.5px] text-gray-500">
           ${getStageValue(stage.id).toLocaleString()} total value
@@ -169,7 +182,7 @@ function DroppableStage({ stage, stageOpportunities, stages, getPriorityBadge, g
       {/* Opportunities List */}
       <div className="p-1.5 space-y-1.5 max-h-[calc(100vh-320px)] overflow-y-auto">
         <SortableContext items={stageOpportunities.map(opp => opp.id)} strategy={verticalListSortingStrategy}>
-          {stageOpportunities.map((opp) => (
+          {stageOpportunities.map((opp, index) => (
             <SortableOpportunityCard
               key={opp.id}
               opportunity={opp}
@@ -182,15 +195,20 @@ function DroppableStage({ stage, stageOpportunities, stages, getPriorityBadge, g
         </SortableContext>
 
         {stageOpportunities.length === 0 && (
-          <div className={`text-center py-4 transition-colors ${isOver ? 'text-blue-500' : ''}`}>
+          <motion.div 
+            className={`text-center py-4 transition-colors ${isOver ? 'text-blue-500' : ''}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
             <div className="mb-1">
               <AlertCircle size={20} />
             </div>
             <div className="text-[10px]">{isOver ? 'Drop here' : 'No opportunities'}</div>
-          </div>
+          </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

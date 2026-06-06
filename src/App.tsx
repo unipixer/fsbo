@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import BuyerLayout from './components/BuyerLayout';
@@ -7,6 +7,7 @@ import AppraisalLayout from './components/AppraisalLayout';
 import BuyerDashboard from './pages/buyer/BuyerDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Buyer pages
 import Dashboard from './pages/Dashboard';
@@ -49,14 +50,28 @@ import ValuationHistory from './pages/appraisal/ValuationHistory';
 import Metrics from './pages/appraisal/Metrics';
 import AppraisalSettings from './pages/appraisal/Settings';
 
-function App() {
+const PageWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          
-          <Route path="/" element={<Navigate to="/login" replace />} />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
+        
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
           {/* Buyer Routes - Protected for buyer role with BuyerLayout */}
           <Route path="/buyer" element={
@@ -118,7 +133,16 @@ function App() {
             <Route path="settings" element={<AppraisalSettings />} />
             <Route path="appraisals" element={<AppraisalAppraisals />} />
           </Route>
-        </Routes>
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AnimatedRoutes />
       </BrowserRouter>
     </AuthProvider>
   );

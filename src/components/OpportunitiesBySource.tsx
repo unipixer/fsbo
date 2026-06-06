@@ -6,6 +6,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { motion } from 'framer-motion';
 
 ChartJS.register(
   ArcElement,
@@ -66,35 +67,56 @@ const OpportunitiesBySource: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white rounded-lg border border-gray-200 p-0"
+    >
       <div className="px-4 py-3.5 pb-2.5 text-sm font-semibold text-gray-900">
         Opportunities by Source
       </div>
       <hr className="border-none border-t border-gray-100 m-0" />
       <div className="px-4 py-3.5 flex items-center gap-3.5">
-        <div className="relative w-[110px] h-[110px] flex-shrink-0">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 }}
+          className="relative w-[110px] h-[110px] flex-shrink-0"
+        >
           <Doughnut data={chartData} options={chartOptions} />
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <div className="text-xl font-bold text-gray-900">234</div>
             <div className="text-xs text-gray-500">Total</div>
           </div>
-        </div>
+        </motion.div>
         <div className="flex-1">
           {sources.map((source, index) => (
-            <div key={index} className="flex items-center gap-1.5 mb-1.5">
+            <motion.div 
+              key={index} 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15 + index * 0.05 }}
+              className="flex items-center gap-1.5 mb-1.5"
+            >
               <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: source.color }} />
               <span className="text-xs text-gray-700 flex-1">{source.name}</span>
               <span className="text-xs font-medium text-gray-900">
                 {source.count} ({source.percentage})
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
-      <div className="px-4 pb-3 text-gray-400 text-[11.5px]">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="px-4 pb-3 text-gray-400 text-[11.5px]"
+      >
         More sources coming soon
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

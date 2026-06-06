@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, Search, Plus, Calendar, Bell, ChevronDown, LogOut, Settings, User, X } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TopbarProps {
   onToggleSidebar: () => void;
@@ -89,29 +90,43 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
           <span className="absolute -top-0.25 -right-0.25 w-3.5 h-3.5 bg-red-500 rounded-full text-[8.5px] text-white flex items-center justify-center font-semibold">8</span>
         </div>
         
-        {showNotifications && (
-          <div className="absolute right-0 top-10 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-            <div className="p-3 border-b border-gray-200 flex items-center justify-between">
-              <span className="text-sm font-semibold text-gray-900">Notifications</span>
-              <button onClick={() => setShowNotifications(false)} className="text-gray-400 hover:text-gray-600">
-                <X size={16} />
-              </button>
-            </div>
-            <div className="max-h-80 overflow-y-auto">
-              {notifications.map((notif) => (
-                <div key={notif.id} className={`p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${notif.unread ? 'bg-blue-50' : ''}`}>
-                  <div className="text-xs text-gray-900 mb-1">{notif.message}</div>
-                  <div className="text-[10px] text-gray-500">{notif.time}</div>
-                </div>
-              ))}
-            </div>
-            <div className="p-2 border-t border-gray-200">
-              <button className="w-full text-xs text-blue-600 hover:text-blue-700 font-medium">
-                Mark all as read
-              </button>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {showNotifications && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute right-0 top-10 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+            >
+              <div className="p-3 border-b border-gray-200 flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-900">Notifications</span>
+                <button onClick={() => setShowNotifications(false)} className="text-gray-400 hover:text-gray-600">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="max-h-80 overflow-y-auto">
+                {notifications.map((notif, index) => (
+                  <motion.div
+                    key={notif.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${notif.unread ? 'bg-blue-50' : ''}`}
+                  >
+                    <div className="text-xs text-gray-900 mb-1">{notif.message}</div>
+                    <div className="text-[10px] text-gray-500">{notif.time}</div>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="p-2 border-t border-gray-200">
+                <button className="w-full text-xs text-blue-600 hover:text-blue-700 font-medium">
+                  Mark all as read
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <div className="relative">
         <div 
@@ -128,109 +143,190 @@ const Topbar: React.FC<TopbarProps> = ({ onToggleSidebar, isSidebarOpen }) => {
           <ChevronDown size={13} color="#6b7280" />
         </div>
         
-        {showProfile && (
-          <div className="absolute right-0 top-10 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-            <div className="p-3 border-b border-gray-200">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-semibold bg-gradient-to-br from-blue-500 to-blue-700">
-                  {user ? getInitials(user.name) : 'JD'}
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-gray-900">{user ? user.name : 'James Dalton'}</div>
-                  <div className="text-xs text-gray-500 capitalize">{user ? user.role : 'Buyer'}</div>
+        <AnimatePresence>
+          {showProfile && (
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="absolute right-0 top-10 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+            >
+              <div className="p-3 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.1 }}
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-semibold bg-gradient-to-br from-blue-500 to-blue-700"
+                  >
+                    {user ? getInitials(user.name) : 'JD'}
+                  </motion.div>
+                  <div>
+                    <div className="text-sm font-semibold text-gray-900">{user ? user.name : 'James Dalton'}</div>
+                    <div className="text-xs text-gray-500 capitalize">{user ? user.role : 'Buyer'}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="p-1">
-              <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                <User size={14} color="#6b7280" />
-                <span>My Profile</span>
-              </button>
-              <button className="w-full flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                <Settings size={14} color="#6b7280" />
-                <span>Settings</span>
-              </button>
-            </div>
-            <div className="p-1 border-t border-gray-200">
-              <button 
-                onClick={handleLogout}
-                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-lg transition"
-              >
-                <LogOut size={14} />
-                <span>Logout</span>
-              </button>
-            </div>
-          </div>
-        )}
+              <div className="p-1">
+                <motion.button
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                >
+                  <User size={14} color="#6b7280" />
+                  <span>My Profile</span>
+                </motion.button>
+                <motion.button
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 }}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                >
+                  <Settings size={14} color="#6b7280" />
+                  <span>Settings</span>
+                </motion.button>
+              </div>
+              <div className="p-1 border-t border-gray-200">
+                <motion.button
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 hover:bg-red-50 rounded-lg transition"
+                >
+                  <LogOut size={14} />
+                  <span>Logout</span>
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-            <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-              <span className="text-sm font-semibold text-gray-900">Add New Opportunity</span>
-              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
+      <AnimatePresence>
+        {showAddModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: 0.2 }}
+              className="bg-white rounded-lg shadow-xl w-full max-w-md"
+            >
+              <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+                <span className="text-sm font-semibold text-gray-900">Add New Opportunity</span>
+                <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="p-4 space-y-3">
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <label className="text-xs font-medium text-gray-700 mb-1 block">Vehicle</label>
+                  <input type="text" placeholder="e.g., 2018 Honda Accord" className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 }}
+                >
+                  <label className="text-xs font-medium text-gray-700 mb-1 block">Seller Name</label>
+                  <input type="text" placeholder="Seller name" className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <label className="text-xs font-medium text-gray-700 mb-1 block">Price</label>
+                  <input type="number" placeholder="Asking price" className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.25 }}
+                >
+                  <label className="text-xs font-medium text-gray-700 mb-1 block">Source</label>
+                  <select className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Facebook Marketplace</option>
+                    <option>OfferUp</option>
+                    <option>Craigslist</option>
+                  </select>
+                </motion.div>
+              </div>
+              <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition"
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 }}
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 text-xs text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition"
+                >
+                  Add Opportunity
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showCalendar && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            className="absolute right-16 top-10 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+          >
+            <div className="p-3 border-b border-gray-200 flex items-center justify-between">
+              <span className="text-sm font-semibold text-gray-900">Upcoming Appointments</span>
+              <button onClick={() => setShowCalendar(false)} className="text-gray-400 hover:text-gray-600">
                 <X size={16} />
               </button>
             </div>
-            <div className="p-4 space-y-3">
-              <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">Vehicle</label>
-                <input type="text" placeholder="e.g., 2018 Honda Accord" className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">Seller Name</label>
-                <input type="text" placeholder="Seller name" className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">Price</label>
-                <input type="number" placeholder="Asking price" className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label className="text-xs font-medium text-gray-700 mb-1 block">Source</label>
-                <select className="w-full text-xs border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  <option>Facebook Marketplace</option>
-                  <option>OfferUp</option>
-                  <option>Craigslist</option>
-                </select>
-              </div>
+            <div className="max-h-64 overflow-y-auto">
+              {appointments.map((apt, index) => (
+                <motion.div
+                  key={apt.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer"
+                >
+                  <div className="text-xs font-semibold text-gray-900 mb-1">{apt.title}</div>
+                  <div className="text-[10px] text-gray-500">{apt.time}</div>
+                  <div className="text-[10px] text-gray-400">{apt.location}</div>
+                </motion.div>
+              ))}
             </div>
-            <div className="p-4 border-t border-gray-200 flex justify-end gap-2">
-              <button onClick={() => setShowAddModal(false)} className="px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                Cancel
-              </button>
-              <button onClick={() => setShowAddModal(false)} className="px-4 py-2 text-xs text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition">
-                Add Opportunity
+            <div className="p-2 border-t border-gray-200">
+              <button className="w-full text-xs text-blue-600 hover:text-blue-700 font-medium">
+                View All Appointments
               </button>
             </div>
-          </div>
-        </div>
-      )}
-
-      {showCalendar && (
-        <div className="absolute right-16 top-10 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-          <div className="p-3 border-b border-gray-200 flex items-center justify-between">
-            <span className="text-sm font-semibold text-gray-900">Upcoming Appointments</span>
-            <button onClick={() => setShowCalendar(false)} className="text-gray-400 hover:text-gray-600">
-              <X size={16} />
-            </button>
-          </div>
-          <div className="max-h-64 overflow-y-auto">
-            {appointments.map((apt) => (
-              <div key={apt.id} className="p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer">
-                <div className="text-xs font-semibold text-gray-900 mb-1">{apt.title}</div>
-                <div className="text-[10px] text-gray-500">{apt.time}</div>
-                <div className="text-[10px] text-gray-400">{apt.location}</div>
-              </div>
-            ))}
-          </div>
-          <div className="p-2 border-t border-gray-200">
-            <button className="w-full text-xs text-blue-600 hover:text-blue-700 font-medium">
-              View All Appointments
-            </button>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

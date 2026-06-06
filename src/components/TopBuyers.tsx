@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 interface Buyer {
   rank: number;
@@ -20,7 +21,12 @@ const TopBuyers: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-0">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-white rounded-lg border border-gray-200 p-0"
+    >
       <div className="flex items-center justify-between px-4 py-3.5 pb-2.5">
         <div className="text-sm font-semibold text-gray-900">Top Buyers (This Week)</div>
         <Link to="/reports" className="text-blue-600 text-xs font-medium cursor-pointer hover:underline">View full report</Link>
@@ -29,21 +35,31 @@ const TopBuyers: React.FC = () => {
       <div className="py-2">
         {buyers.map((buyer, index) => (
           <React.Fragment key={index}>
-            <div className="flex items-center gap-2.5 px-4 py-2">
+            <motion.div 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + index * 0.05 }}
+              className="flex items-center gap-2.5 px-4 py-2"
+            >
               <span className="text-gray-400 text-xs w-2.5 text-center flex-shrink-0">{buyer.rank}</span>
               <div className="w-6.5 h-6.5 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0" style={{ background: buyer.gradient }}>{buyer.initials}</div>
               <span className="text-xs text-gray-900 font-medium flex-1">{buyer.name}</span>
               <div className="flex items-center gap-1.5 flex-1.2">
                 <div className="h-1.5 bg-gray-200 rounded-md overflow-hidden flex-1">
-                  <div className="h-full rounded-md bg-blue-600" style={{ width: `${buyer.percentage}%` }} />
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${buyer.percentage}%` }}
+                    transition={{ delay: 0.15 + index * 0.05, duration: 0.5 }}
+                    className="h-full rounded-md bg-blue-600"
+                  />
                 </div>
                 <span className="text-xs text-gray-700 font-medium w-4 text-right">{buyer.count}</span>
               </div>
-            </div>
+            </motion.div>
           </React.Fragment>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
