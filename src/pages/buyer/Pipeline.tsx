@@ -2,8 +2,197 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Filter, Search, Plus, MoreVertical, User, Calendar, 
-  MessageSquare, Phone, Clock, AlertCircle, XCircle
+  MessageSquare, Phone, Clock, AlertCircle, XCircle, GripVertical
 } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  useDroppable,
+  DragOverlay,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+interface SortableOpportunityCardProps {
+  opportunity: Opportunity;
+  stages: any[];
+  getPriorityBadge: (priority: string) => string;
+  getSourceBadge: (source: string) => string;
+  onClick: (opp: Opportunity) => void;
+}
+
+function SortableOpportunityCard({ opportunity, stages, getPriorityBadge, getSourceBadge, onClick }: SortableOpportunityCardProps) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ 
+    id: opportunity.id,
+    animateLayoutChanges: () => true,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: isDragging ? 'transform 200ms cubic-bezier(0.2, 0, 0, 1)' : transition,
+    opacity: isDragging ? 0.9 : 1,
+    boxShadow: isDragging ? '0 20px 40px rgba(0,0,0,0.25)' : 'none',
+    zIndex: isDragging ? 9999 : 1,
+    cursor: isDragging ? 'grabbing' : 'grab',
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`bg-white rounded-lg border p-2 cursor-pointer transition-all ${
+        isDragging 
+          ? 'border-blue-500 shadow-2xl' 
+          : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+      }`}
+      onClick={(e) => {
+        if (!isDragging) onClick(opportunity);
+      }}
+    >
+      {/* Drag Handle */}
+      <div className={`flex items-center justify-between mb-1.5 ${isDragging ? 'text-blue-500' : ''}`}>
+        <GripVertical size={12} color={isDragging ? '#3b82f6' : '#9ca3af'} className="cursor-grab hover:cursor-grabbing" />
+      </div>
+
+      {/* Vehicle Image & Basic Info */}
+      <div className="flex gap-1.5 mb-1.5">
+        <div className="w-14 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100">
+          <img src={opportunity.image} alt={opportunity.vehicle} className="w-full h-full object-cover" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-[11px] font-semibold text-gray-900 truncate">{opportunity.vehicle}</div>
+          <div className="text-[10px] text-gray-500 truncate">{opportunity.mileage} mi</div>
+          <div className="text-[11px] font-bold text-gray-900">${opportunity.price.toLocaleString()}</div>
+        </div>
+      </div>
+
+      {/* Seller & Assignment */}
+      <div className="flex items-center justify-between mb-1.5">
+        <div className="flex items-center gap-1">
+          <User size={10} color="#9ca3af" />
+          <span className="text-[10px] text-gray-600">{opportunity.seller}</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className={getSourceBadge(opportunity.source)}>{opportunity.source}</span>
+        </div>
+      </div>
+
+      {/* Assigned Buyer */}
+      <div className="flex items-center gap-1 mb-1.5">
+        <div className="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center">
+          <span className="text-[8px] font-medium text-blue-600">
+            {opportunity.assignedTo.split(' ').map(n => n[0]).join('')}
+          </span>
+        </div>
+        <span className="text-[10px] text-gray-600">{opportunity.assignedTo}</span>
+      </div>
+
+      {/* Priority & Follow-up */}
+      <div className="flex items-center justify-between">
+        <span className={getPriorityBadge(opportunity.priority)}>
+          {opportunity.priority.charAt(0).toUpperCase() + opportunity.priority.slice(1)}
+        </span>
+        {opportunity.followUpDate && (
+          <div className="flex items-center gap-0.5 text-[9px] text-orange-600">
+            <Clock size={9} />
+            <span>{opportunity.followUpDate}</span>
+          </div>
+        )}
+      </div>
+
+      {/* Last Activity */}
+      <div className="mt-1.5 pt-1.5 border-t border-gray-100">
+        <div className="text-[9px] text-gray-400">
+          Last activity: {opportunity.lastActivity}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface DroppableStageProps {
+  stage: any;
+  stageOpportunities: Opportunity[];
+  stages: any[];
+  getPriorityBadge: (priority: string) => string;
+  getSourceBadge: (source: string) => string;
+  getStageValue: (stageId: string) => number;
+  getStageCount: (stageId: string) => number;
+  onOpportunityClick: (opp: Opportunity) => void;
+}
+
+function DroppableStage({ stage, stageOpportunities, stages, getPriorityBadge, getSourceBadge, getStageValue, getStageCount, onOpportunityClick }: DroppableStageProps) {
+  const { setNodeRef, isOver } = useDroppable({ id: stage.id });
+
+  return (
+    <div
+      ref={setNodeRef}
+      key={stage.id}
+      className={`flex-shrink-0 w-60 bg-gray-50 rounded-lg border overflow-hidden transition-all duration-200 ${
+        isOver 
+          ? 'border-blue-500 bg-blue-100 scale-[1.02] shadow-lg' 
+          : 'border-gray-200'
+      }`}
+    >
+      {/* Stage Header */}
+      <div className="px-2.5 py-2 border-b border-gray-200 transition-colors" style={{ backgroundColor: stage.bgColor }}>
+        <div className="flex items-center justify-between mb-0.5">
+          <div className="text-xs font-semibold text-gray-900">{stage.name}</div>
+          <div className="text-[10px] font-medium px-1.5 py-0.5 rounded-full transition-all" style={{ backgroundColor: stage.color, color: 'white' }}>
+            {getStageCount(stage.id)}
+          </div>
+        </div>
+        <div className="text-[9.5px] text-gray-500">
+          ${getStageValue(stage.id).toLocaleString()} total value
+        </div>
+      </div>
+
+      {/* Opportunities List */}
+      <div className="p-1.5 space-y-1.5 max-h-[calc(100vh-320px)] overflow-y-auto">
+        <SortableContext items={stageOpportunities.map(opp => opp.id)} strategy={verticalListSortingStrategy}>
+          {stageOpportunities.map((opp) => (
+            <SortableOpportunityCard
+              key={opp.id}
+              opportunity={opp}
+              stages={stages}
+              getPriorityBadge={getPriorityBadge}
+              getSourceBadge={getSourceBadge}
+              onClick={onOpportunityClick}
+            />
+          ))}
+        </SortableContext>
+
+        {stageOpportunities.length === 0 && (
+          <div className={`text-center py-4 transition-colors ${isOver ? 'text-blue-500' : ''}`}>
+            <div className="mb-1">
+              <AlertCircle size={20} />
+            </div>
+            <div className="text-[10px]">{isOver ? 'Drop here' : 'No opportunities'}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 interface Opportunity {
   id: string;
@@ -30,8 +219,36 @@ const Pipeline: React.FC = () => {
   const [selectedBuyer, setSelectedBuyer] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
+  const pipelineRef = React.useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
-  const opportunities: Opportunity[] = [
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!pipelineRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - pipelineRef.current.offsetLeft);
+    setScrollLeft(pipelineRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !pipelineRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - pipelineRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    pipelineRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([
     {
       id: '1',
       vehicle: '2018 Honda Accord EX',
@@ -180,7 +397,35 @@ const Pipeline: React.FC = () => {
       notes: 'Seller asking for more time',
       image: '/images/car3.jpg'
     }
-  ];
+  ]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragStart = (event: any) => {
+    setActiveId(event.active.id as string);
+  };
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      const opportunityId = active.id as string;
+      const targetStageId = over.id as string;
+      
+      setOpportunities((opps) =>
+        opps.map((opp) =>
+          opp.id === opportunityId ? { ...opp, stage: targetStageId as any } : opp
+        )
+      );
+    }
+    
+    setActiveId(null);
+  };
 
   const stages = [
     { id: 'new', name: 'New', color: '#3b82f6', bgColor: '#eff6ff' },
@@ -295,101 +540,67 @@ const Pipeline: React.FC = () => {
         </div>
 
         {/* Pipeline Kanban Board */}
-        <div className="flex gap-3 overflow-x-auto pb-4">
-          {stages.map((stage) => {
-            const stageOpportunities = getOpportunitiesByStage(stage.id);
-            const stageValue = getStageValue(stage.id);
-            
-            return (
-              <div key={stage.id} className="flex-shrink-0 w-72 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
-                {/* Stage Header */}
-                <div className="px-3 py-2.5 border-b border-gray-200" style={{ backgroundColor: stage.bgColor }}>
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="text-sm font-semibold text-gray-900">{stage.name}</div>
-                    <div className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ backgroundColor: stage.color, color: 'white' }}>
-                      {getStageCount(stage.id)}
-                    </div>
-                  </div>
-                  <div className="text-[10.5px] text-gray-500">
-                    ${stageValue.toLocaleString()} total value
-                  </div>
-                </div>
-
-                {/* Opportunities List */}
-                <div className="p-2 space-y-2 max-h-[calc(100vh-320px)] overflow-y-auto">
-                  {stageOpportunities.map((opp) => (
-                    <div
-                      key={opp.id}
-                      className="bg-white rounded-lg border border-gray-200 p-2.5 cursor-pointer hover:border-gray-300 hover:shadow-sm transition-all"
-                      onClick={() => setSelectedOpportunity(opp)}
-                    >
-                      {/* Vehicle Image & Basic Info */}
-                      <div className="flex gap-2 mb-2">
-                        <div className="w-16 h-12 rounded-md overflow-hidden flex-shrink-0 bg-gray-100">
-                          <img src={opp.image} alt={opp.vehicle} className="w-full h-full object-cover" />
+        <div 
+          className="flex gap-3 overflow-x-auto pb-4 cursor-grab active:cursor-grabbing select-none"
+          ref={pipelineRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+          <DndContext 
+            sensors={sensors} 
+            collisionDetection={closestCenter} 
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <div className="flex gap-3">
+              {stages.map((stage) => {
+                const stageOpportunities = getOpportunitiesByStage(stage.id);
+                
+                return (
+                  <DroppableStage
+                    key={stage.id}
+                    stage={stage}
+                    stageOpportunities={stageOpportunities}
+                    stages={stages}
+                    getPriorityBadge={getPriorityBadge}
+                    getSourceBadge={getSourceBadge}
+                    getStageValue={getStageValue}
+                    getStageCount={getStageCount}
+                    onOpportunityClick={setSelectedOpportunity}
+                  />
+                );
+              })}
+            </div>
+            <DragOverlay>
+              {activeId ? (
+                <div className="bg-white rounded-lg border-2 border-blue-500 p-2 shadow-2xl rotate-3 scale-105">
+                  {(() => {
+                    const opp = opportunities.find(o => o.id === activeId);
+                    if (!opp) return null;
+                    return (
+                      <>
+                        <div className="flex items-center justify-between mb-1.5 text-blue-500">
+                          <GripVertical size={12} color="#3b82f6" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-gray-900 truncate">{opp.vehicle}</div>
-                          <div className="text-[11px] text-gray-500 truncate">{opp.mileage} mi</div>
-                          <div className="text-xs font-bold text-gray-900">${opp.price.toLocaleString()}</div>
-                        </div>
-                      </div>
-
-                      {/* Seller & Assignment */}
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-1.5">
-                          <User size={11} color="#9ca3af" />
-                          <span className="text-[10.5px] text-gray-600">{opp.seller}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className={getSourceBadge(opp.source)}>{opp.source}</span>
-                        </div>
-                      </div>
-
-                      {/* Assigned Buyer */}
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
-                          <span className="text-[9px] font-medium text-blue-600">
-                            {opp.assignedTo.split(' ').map(n => n[0]).join('')}
-                          </span>
-                        </div>
-                        <span className="text-[10.5px] text-gray-600">{opp.assignedTo}</span>
-                      </div>
-
-                      {/* Priority & Follow-up */}
-                      <div className="flex items-center justify-between">
-                        <span className={getPriorityBadge(opp.priority)}>
-                          {opp.priority.charAt(0).toUpperCase() + opp.priority.slice(1)}
-                        </span>
-                        {opp.followUpDate && (
-                          <div className="flex items-center gap-1 text-[10.5px] text-orange-600">
-                            <Clock size={10} />
-                            <span>{opp.followUpDate}</span>
+                        <div className="flex gap-1.5 mb-1.5">
+                          <div className="w-14 h-10 rounded-md overflow-hidden flex-shrink-0 bg-gray-100">
+                            <img src={opp.image} alt={opp.vehicle} className="w-full h-full object-cover" />
                           </div>
-                        )}
-                      </div>
-
-                      {/* Last Activity */}
-                      <div className="mt-2 pt-2 border-t border-gray-100">
-                        <div className="text-[10px] text-gray-400">
-                          Last activity: {opp.lastActivity}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[11px] font-semibold text-gray-900 truncate">{opp.vehicle}</div>
+                            <div className="text-[10px] text-gray-500 truncate">{opp.mileage} mi</div>
+                            <div className="text-[11px] font-bold text-gray-900">${opp.price.toLocaleString()}</div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {stageOpportunities.length === 0 && (
-                    <div className="text-center py-6">
-                      <div className="text-gray-300 mb-1">
-                        <AlertCircle size={24} />
-                      </div>
-                      <div className="text-xs text-gray-400">No opportunities</div>
-                    </div>
-                  )}
+                      </>
+                    );
+                  })()}
                 </div>
-              </div>
-            );
-          })}
+              ) : null}
+            </DragOverlay>
+          </DndContext>
         </div>
       </div>
 
